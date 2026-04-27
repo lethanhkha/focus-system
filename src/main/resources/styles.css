@@ -1,0 +1,370 @@
+/* ============================================================
+   Focus System – Styles
+   Color Palette:
+     Primary (Action):   #2ecc71 (green)
+     Secondary (Info):   #3498db (blue)
+     Destructive:        #e74c3c (red)
+     Warning:            #f39c12 (orange)
+     Background:         #f4f6f9
+     Surface:            #ffffff
+     Border:             #dfe6e9
+     Text Primary:       #2d3436
+     Text Secondary:     #636e72
+   ============================================================ */
+
+/* ---- Core ---- */
+.root {
+    -fx-font-family: "Segoe UI", Arial, sans-serif;
+    -fx-base: #f4f6f9;
+    -fx-background-color: #f4f6f9;
+}
+
+.label {
+    -fx-text-fill: #2d3436;
+}
+
+/* ---- TableView ---- */
+.table-view {
+    -fx-font-size: 13px;
+    -fx-selection-bar: #3498db;
+    -fx-selection-bar-non-focused: #dfe6e9;
+    -fx-background-color: #ffffff;
+    -fx-border-color: #dfe6e9;
+    -fx-border-radius: 6;
+    -fx-background-radius: 6;
+}
+
+.table-view .column-header {
+    -fx-background-color: #f0f3f5;
+    -fx-border-color: #dfe6e9;
+    -fx-padding: 8 12;
+}
+
+.table-view .column-header .label {
+    -fx-font-weight: bold;
+    -fx-text-fill: #2d3436;
+    -fx-font-size: 13px;
+}
+
+.table-row-cell:empty {
+    -fx-background-color: transparent;
+}
+
+/* ---- Row Hover ---- */
+.table-row-cell:filled:hover {
+    -fx-background-color: #ebf5fb;
+}
+
+/* ---- Row Selected (default) – high contrast ---- */
+.table-row-cell:selected {
+    -fx-background-color: #1a6fb5;
+}
+
+.table-row-cell:selected:hover {
+    -fx-background-color: #1558a0;
+}
+
+.table-row-cell:selected .table-cell {
+    -fx-text-fill: white;
+}
+
+/* Keep text white in non-focused selected state */
+.table-row-cell:selected:focused .table-cell {
+    -fx-text-fill: white;
+}
+
+/* ---- Conditional Row Styling via PseudoClass ---- */
+
+/* Overdue tasks: light red background */
+.table-row-cell:overdue {
+    -fx-background-color: #fde8e8;
+}
+
+.table-row-cell:overdue:hover {
+    -fx-background-color: #f9cfcf;
+}
+
+.table-row-cell:overdue .table-cell {
+    -fx-text-fill: #c0392b;
+}
+
+/* Overdue selected: deep red background, white text */
+.table-row-cell:overdue:selected {
+    -fx-background-color: #a93226;
+}
+
+.table-row-cell:overdue:selected .table-cell {
+    -fx-text-fill: white;
+}
+
+/* Completed tasks: light green, dimmed, strikethrough */
+.table-row-cell:completed {
+    -fx-background-color: #eafaf1;
+}
+
+.table-row-cell:completed:hover {
+    -fx-background-color: #d5f5e3;
+}
+
+.table-row-cell:completed .table-cell {
+    -fx-text-fill: #7f8c8d;
+}
+
+.table-row-cell:completed .table-cell .text {
+    -fx-strikethrough: true;
+}
+
+/* Completed selected: medium teal, white text, strikethrough retained */
+.table-row-cell:completed:selected {
+    -fx-background-color: #1e8449;
+}
+
+.table-row-cell:completed:selected .table-cell {
+    -fx-text-fill: white;
+    -fx-opacity: 1.0;
+}
+
+.table-row-cell:completed:selected .table-cell .text {
+    -fx-strikethrough: true;
+}
+
+/* Due today: light gold highlight */
+.table-row-cell:today {
+    -fx-background-color: #fef9e7;
+}
+
+.table-row-cell:today:hover {
+    -fx-background-color: #fdebd0;
+}
+
+.table-row-cell:today .table-cell {
+    -fx-text-fill: #b7950b;
+}
+
+/* Today selected: dark amber, white text */
+.table-row-cell:today:selected {
+    -fx-background-color: #b7770d;
+}
+
+.table-row-cell:today:selected .table-cell {
+    -fx-text-fill: white;
+}
+
+/* ---- "Còn lại" column cell classes ---- */
+.urgent-task {
+    -fx-text-fill: #e74c3c;
+    -fx-font-weight: bold;
+}
+
+.warning-task {
+    -fx-text-fill: #f39c12;
+    -fx-font-weight: bold;
+}
+
+.normal-task {
+    -fx-text-fill: #27ae60;
+}
+
+/* ---- Search Box ---- */
+.search-box {
+    -fx-background-radius: 18;
+    -fx-padding: 6 14;
+    -fx-border-radius: 18;
+    -fx-border-color: #bdc3c7;
+    -fx-background-color: #ffffff;
+    -fx-prompt-text-fill: #95a5a6;
+}
+
+.search-box:focused {
+    -fx-border-color: #3498db;
+    -fx-effect: dropshadow(gaussian, rgba(52, 152, 219, 0.2), 6, 0, 0, 0);
+}
+
+/* ---- Filter ComboBox ---- */
+.filter-combo {
+    -fx-background-radius: 6;
+    -fx-border-radius: 6;
+}
+
+/* ---- Filter Bar Container ---- */
+.filter-bar {
+    -fx-background-color: #ffffff;
+    -fx-background-radius: 8;
+    -fx-border-color: #dfe6e9;
+    -fx-border-radius: 8;
+    -fx-padding: 10 14;
+}
+
+/* ---- Input Form Container ---- */
+.input-form {
+    -fx-border-color: #dfe6e9;
+    -fx-border-width: 1 0 0 0;
+    -fx-padding: 12;
+    -fx-background-color: #ffffff;
+    -fx-background-radius: 0 0 8 8;
+}
+
+/* ---- Buttons ---- */
+.btn-primary {
+    -fx-background-color: #2ecc71;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-background-radius: 6;
+    -fx-padding: 6 16;
+    -fx-cursor: hand;
+}
+
+.btn-primary:hover {
+    -fx-background-color: #27ae60;
+    -fx-effect: dropshadow(gaussian, rgba(46, 204, 113, 0.3), 4, 0, 0, 1);
+}
+
+.btn-danger {
+    -fx-background-color: #e74c3c;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-background-radius: 6;
+    -fx-padding: 6 16;
+    -fx-cursor: hand;
+}
+
+.btn-danger:hover {
+    -fx-background-color: #c0392b;
+    -fx-effect: dropshadow(gaussian, rgba(231, 76, 60, 0.3), 4, 0, 0, 1);
+}
+
+.btn-secondary {
+    -fx-background-color: #3498db;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-background-radius: 6;
+    -fx-padding: 6 16;
+    -fx-cursor: hand;
+}
+
+.btn-secondary:hover {
+    -fx-background-color: #2980b9;
+    -fx-effect: dropshadow(gaussian, rgba(52, 152, 219, 0.3), 4, 0, 0, 1);
+}
+
+.btn-reset {
+    -fx-background-color: #95a5a6;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-background-radius: 6;
+    -fx-padding: 6 12;
+    -fx-cursor: hand;
+}
+
+.btn-reset:hover {
+    -fx-background-color: #7f8c8d;
+}
+
+/* ---- TextField general polish ---- */
+.text-field {
+    -fx-background-radius: 6;
+    -fx-border-radius: 6;
+    -fx-border-color: #dfe6e9;
+    -fx-padding: 6 10;
+    -fx-prompt-text-fill: #b2bec3;
+}
+
+.text-field:focused {
+    -fx-border-color: #3498db;
+    -fx-effect: dropshadow(gaussian, rgba(52, 152, 219, 0.15), 4, 0, 0, 0);
+}
+
+/* ---- Validation Error Style ---- */
+.input-error {
+    -fx-border-color: #e74c3c;
+    -fx-border-width: 2;
+    -fx-effect: dropshadow(gaussian, rgba(231, 76, 60, 0.25), 6, 0, 0, 0);
+}
+
+/* ---- ComboBox polish ---- */
+.combo-box {
+    -fx-background-radius: 6;
+    -fx-border-radius: 6;
+    -fx-cursor: hand;
+}
+
+/* ---- DatePicker ---- */
+.date-picker {
+    -fx-background-radius: 6;
+    -fx-border-radius: 6;
+    -fx-cursor: hand;
+}
+
+/* ---- Status Bar ---- */
+.status-bar {
+    -fx-background-color: #2d3436;
+    -fx-padding: 6 14;
+    -fx-background-radius: 0;
+}
+
+.status-bar .label {
+    -fx-text-fill: #dfe6e9;
+    -fx-font-size: 12px;
+}
+
+/* ---- CheckBox in Table (cursor) ---- */
+.check-box-table-cell {
+    -fx-cursor: hand;
+}
+
+/* ---- Tab Pane ---- */
+.tab-pane>.tab-header-area>.headers-region>.tab {
+    -fx-background-radius: 6 6 0 0;
+    -fx-padding: 6 18;
+}
+
+.tab-pane>.tab-header-area>.headers-region>.tab:selected {
+    -fx-background-color: #ffffff;
+}
+
+.tab-pane>.tab-header-area>.headers-region>.tab .tab-label {
+    -fx-font-weight: bold;
+    -fx-font-size: 13px;
+}
+
+/* ---- Calendar Styles ---- */
+.calendar-day-header {
+    -fx-background-color: #f0f3f5;
+    -fx-border-color: #dfe6e9;
+    -fx-border-width: 0 0 1 0;
+}
+
+.calendar-cell {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #dfe6e9;
+    -fx-border-width: 1;
+    -fx-background-radius: 4;
+}
+
+.calendar-cell-other-month {
+    -fx-background-color: #f9fbfd;
+    -fx-opacity: 0.6;
+}
+
+.calendar-today {
+    -fx-background-color: #fef9e7;
+    -fx-border-color: #f1c40f;
+    -fx-border-width: 2;
+}
+
+.calendar-task-pending {
+    -fx-background-color: #e74c3c;
+    -fx-text-fill: white;
+    -fx-background-radius: 4;
+    -fx-padding: 3 6;
+    -fx-font-size: 11px;
+}
+
+.calendar-task-completed {
+    -fx-background-color: #2ecc71;
+    -fx-text-fill: white;
+    -fx-strikethrough: true;
+    -fx-background-radius: 4;
+    -fx-padding: 3 6;
+    -fx-font-size: 11px;
+}

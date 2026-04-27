@@ -1,0 +1,674 @@
+[
+  {
+    "semester": "HK1",
+    "code": "002009",
+    "name": "Nhập môn Tin học",
+    "credits": 2,
+    "isCompulsory": true,
+    "isActive": true
+  },
+  {
+    "semester": "HK1",
+    "code": "003307",
+    "name": "Giáo dục thể chất 1",
+    "credits": 2,
+    "isCompulsory": true,
+    "isActive": true
+  },
+  {
+    "semester": "HK1",
+    "code": "003848",
+    "name": "Nhập môn Lập trình",
+    "credits": 2,
+    "isCompulsory": true,
+    "isActive": true
+  },
+  {
+    "semester": "HK1",
+    "code": "014164",
+    "name": "Triết học Mác - Lênin",
+    "credits": 3,
+    "isCompulsory": true,
+    "isActive": true
+  },
+  {
+    "semester": "HK1",
+    "code": "015216",
+    "name": "Chứng chỉ Tiếng Anh",
+    "credits": 0,
+    "isCompulsory": true,
+    "isActive": true
+  },
+  {
+    "semester": "HK1",
+    "code": "016600",
+    "name": "Giáo dục Quốc phòng và An Ninh",
+    "credits": 8,
+    "isCompulsory": true,
+    "isActive": true
+  },
+  {
+    "semester": "HK2",
+    "code": "000941",
+    "name": "Kỹ thuật lập trình",
+    "credits": 3,
+    "isCompulsory": true,
+    "isActive": true
+  },
+  {
+    "semester": "HK2",
+    "code": "002137",
+    "name": "Hệ thống Máy tính",
+    "credits": 4,
+    "isCompulsory": true,
+    "isActive": true
+  },
+  {
+    "semester": "HK2",
+    "code": "003192",
+    "name": "Kỹ năng làm việc nhóm",
+    "credits": 2,
+    "isCompulsory": true,
+    "isActive": true
+  },
+  {
+    "semester": "HK2",
+    "code": "003259",
+    "name": "Toán cao cấp 1",
+    "credits": 2,
+    "isCompulsory": true,
+    "isActive": true
+  },
+  {
+    "semester": "HK2",
+    "code": "003306",
+    "name": "Giáo dục thể chất 2",
+    "credits": 2,
+    "isCompulsory": true,
+    "isActive": true
+  },
+  {
+    "semester": "HK2",
+    "code": "014165",
+    "name": "Kinh tế chính trị Mác - Lênin",
+    "credits": 2,
+    "isCompulsory": true,
+    "isActive": true
+  },
+  {
+    "semester": "HK2",
+    "code": "015253",
+    "name": "Tiếng Anh 1",
+    "credits": 3,
+    "isCompulsory": true,
+    "isActive": true
+  },
+  {
+    "semester": "HK2",
+    "code": "003193",
+    "name": "Toán ứng dụng",
+    "credits": 3,
+    "isCompulsory": false,
+    "isActive": false
+  },
+  {
+    "semester": "HK2",
+    "code": "003240",
+    "name": "Hàm phức và phép biến đổi Laplace",
+    "credits": 3,
+    "isCompulsory": false,
+    "isActive": false
+  },
+  {
+    "semester": "HK2",
+    "code": "003320",
+    "name": "Phương pháp tính",
+    "credits": 3,
+    "isCompulsory": false,
+    "isActive": false
+  },
+  {
+    "semester": "HK2",
+    "code": "003345",
+    "name": "Vật lý đại cương",
+    "credits": 3,
+    "isCompulsory": false,
+    "isActive": true
+  },
+  {
+    "semester": "HK2",
+    "code": "003395",
+    "name": "Logic học",
+    "credits": 3,
+    "isCompulsory": false,
+    "isActive": false
+  },
+  {
+    "semester": "HK3",
+    "code": "000901",
+    "name": "Cấu trúc rời rạc",
+    "credits": 3,
+    "isCompulsory": true,
+    "isActive": true
+  },
+  {
+    "semester": "HK3",
+    "code": "000942",
+    "name": "Cấu trúc dữ liệu và giải thuật",
+    "credits": 4,
+    "isCompulsory": true,
+    "isActive": true
+  },
+  {
+    "semester": "HK3",
+    "code": "001146",
+    "name": "Hệ cơ sở dữ liệu",
+    "credits": 4,
+    "isCompulsory": true,
+    "isActive": true
+  },
+  {
+    "semester": "HK3",
+    "code": "003288",
+    "name": "Toán cao cấp 2",
+    "credits": 2,
+    "isCompulsory": true,
+    "isActive": true
+  },
+  {
+    "semester": "HK3",
+    "code": "003591",
+    "name": "Lập trình hướng đối tượng",
+    "credits": 3,
+    "isCompulsory": true,
+    "isActive": true
+  },
+  {
+    "semester": "HK3",
+    "code": "015254",
+    "name": "Tiếng Anh 2",
+    "credits": 3,
+    "isCompulsory": true,
+    "isActive": true
+  },
+  {
+    "semester": "HK3",
+    "code": "001103",
+    "name": "Địa lý kinh tế",
+    "credits": 3,
+    "isCompulsory": false,
+    "isActive": false
+  },
+  {
+    "semester": "HK3",
+    "code": "003197",
+    "name": "Kỹ năng xây dựng kế hoạch",
+    "credits": 3,
+    "isCompulsory": false,
+    "isActive": false
+  },
+  {
+    "semester": "HK3",
+    "code": "003206",
+    "name": "Môi trường và con người",
+    "credits": 3,
+    "isCompulsory": false,
+    "isActive": false
+  },
+  {
+    "semester": "HK3",
+    "code": "015296",
+    "name": "Công nghệ thông tin trong chuyển đổi số",
+    "credits": 3,
+    "isCompulsory": false,
+    "isActive": true
+  },
+  {
+    "semester": "HK3",
+    "code": "015299",
+    "name": "Ứng dụng hóa học trong Công nghiệp",
+    "credits": 3,
+    "isCompulsory": false,
+    "isActive": false
+  },
+  {
+    "semester": "HK3",
+    "code": "015300",
+    "name": "Ứng dụng 5S và Kaizen trong sản xuất",
+    "credits": 3,
+    "isCompulsory": false,
+    "isActive": false
+  },
+  {
+    "semester": "HK4",
+    "code": "001058",
+    "name": "Mạng máy tính",
+    "credits": 3,
+    "isCompulsory": true,
+    "isActive": true
+  },
+  {
+    "semester": "HK4",
+    "code": "002145",
+    "name": "Hệ thống và Công nghệ Web",
+    "credits": 3,
+    "isCompulsory": true,
+    "isActive": true
+  },
+  {
+    "semester": "HK4",
+    "code": "003753",
+    "name": "Phân tích thiết kế hệ thống",
+    "credits": 3,
+    "isCompulsory": true,
+    "isActive": true
+  },
+  {
+    "semester": "HK4",
+    "code": "014166",
+    "name": "Hệ quản trị cơ sở dữ liệu NoSQL MongoDB",
+    "credits": 3,
+    "isCompulsory": true,
+    "isActive": true
+  },
+  {
+    "semester": "HK4",
+    "code": "001076",
+    "name": "Tương tác người máy",
+    "credits": 3,
+    "isCompulsory": false,
+    "isActive": false
+  },
+  {
+    "semester": "HK4",
+    "code": "001207",
+    "name": "Hệ quản trị cơ sở dữ liệu",
+    "credits": 3,
+    "isCompulsory": false,
+    "isActive": true
+  },
+  {
+    "semester": "HK4",
+    "code": "002044",
+    "name": "Lập trình hướng sự kiện với công nghệ .NET",
+    "credits": 4,
+    "isCompulsory": false,
+    "isActive": false
+  },
+  {
+    "semester": "HK4",
+    "code": "002070",
+    "name": "Lập trình hướng sự kiện với công nghệ Java",
+    "credits": 4,
+    "isCompulsory": false,
+    "isActive": true
+  },
+  {
+    "semester": "HK4",
+    "code": "003436",
+    "name": "Thương mại điện tử",
+    "credits": 3,
+    "isCompulsory": false,
+    "isActive": false
+  },
+  {
+    "semester": "HK4",
+    "code": "003442",
+    "name": "Lập trình GUI với Qt Framework",
+    "credits": 4,
+    "isCompulsory": false,
+    "isActive": false
+  },
+  {
+    "semester": "HK5",
+    "code": "000908",
+    "name": "Lý thuyết đồ thị",
+    "credits": 3,
+    "isCompulsory": true,
+    "isActive": true
+  },
+  {
+    "semester": "HK5",
+    "code": "003198",
+    "name": "Phương pháp luận nghiên cứu khoa học",
+    "credits": 2,
+    "isCompulsory": true,
+    "isActive": true
+  },
+  {
+    "semester": "HK5",
+    "code": "003501",
+    "name": "Phát triển ứng dụng",
+    "credits": 3,
+    "isCompulsory": true,
+    "isActive": true
+  },
+  {
+    "semester": "HK5",
+    "code": "014167",
+    "name": "Chủ nghĩa xã hội khoa học",
+    "credits": 2,
+    "isCompulsory": true,
+    "isActive": true
+  },
+  {
+    "semester": "HK5",
+    "code": "014168",
+    "name": "Mô hình hóa dữ liệu NoSQL MongoDB",
+    "credits": 3,
+    "isCompulsory": true,
+    "isActive": true
+  },
+  {
+    "semester": "HK5",
+    "code": "015414",
+    "name": "Tư duy thiết kế và Trải nghiệm người dùng",
+    "credits": 3,
+    "isCompulsory": true,
+    "isActive": true
+  },
+  {
+    "semester": "HK5",
+    "code": "003194",
+    "name": "Hội họa",
+    "credits": 3,
+    "isCompulsory": false,
+    "isActive": false
+  },
+  {
+    "semester": "HK5",
+    "code": "003195",
+    "name": "Xã hội học",
+    "credits": 3,
+    "isCompulsory": false,
+    "isActive": false
+  },
+  {
+    "semester": "HK5",
+    "code": "003203",
+    "name": "Âm nhạc – Nhạc lý và Guitar căn bản",
+    "credits": 3,
+    "isCompulsory": false,
+    "isActive": false
+  },
+  {
+    "semester": "HK5",
+    "code": "003245",
+    "name": "Tiếng Việt thực hành",
+    "credits": 3,
+    "isCompulsory": false,
+    "isActive": false
+  },
+  {
+    "semester": "HK5",
+    "code": "003325",
+    "name": "Tâm lý học đại cương",
+    "credits": 3,
+    "isCompulsory": false,
+    "isActive": false
+  },
+  {
+    "semester": "HK5",
+    "code": "010665",
+    "name": "Cơ sở văn hóa Việt Nam",
+    "credits": 3,
+    "isCompulsory": false,
+    "isActive": false
+  },
+  {
+    "semester": "HK5",
+    "code": "014193",
+    "name": "Kỹ năng sử dụng bàn phím và thiết bị văn phòng",
+    "credits": 3,
+    "isCompulsory": false,
+    "isActive": true
+  },
+  {
+    "semester": "HK6",
+    "code": "001004",
+    "name": "Nhập môn an toàn thông tin",
+    "credits": 3,
+    "isCompulsory": true,
+    "isActive": true
+  },
+  {
+    "semester": "HK6",
+    "code": "001111",
+    "name": "Công nghệ phần mềm",
+    "credits": 3,
+    "isCompulsory": true,
+    "isActive": true
+  },
+  {
+    "semester": "HK6",
+    "code": "003347",
+    "name": "Những vấn đề xã hội và đạo đức nghề nghiệp",
+    "credits": 3,
+    "isCompulsory": true,
+    "isActive": true
+  },
+  {
+    "semester": "HK6",
+    "code": "003451",
+    "name": "Thống kê máy tính và ứng dụng",
+    "credits": 3,
+    "isCompulsory": true,
+    "isActive": true
+  },
+  {
+    "semester": "HK6",
+    "code": "015413",
+    "name": "Phát triển giao diện ứng dụng",
+    "credits": 3,
+    "isCompulsory": true,
+    "isActive": true
+  },
+  {
+    "semester": "HK6",
+    "code": "000868",
+    "name": "Kỹ thuật điện tử",
+    "credits": 3,
+    "isCompulsory": false,
+    "isActive": false
+  },
+  {
+    "semester": "HK6",
+    "code": "002031",
+    "name": "Lập trình phân tích dữ liệu 1",
+    "credits": 3,
+    "isCompulsory": false,
+    "isActive": false
+  },
+  {
+    "semester": "HK6",
+    "code": "002146",
+    "name": "Lập trình phân tán với công nghệ Java",
+    "credits": 3,
+    "isCompulsory": false,
+    "isActive": true
+  },
+  {
+    "semester": "HK6",
+    "code": "002349",
+    "name": "Lập trình phân tán với công nghệ .NET",
+    "credits": 3,
+    "isCompulsory": false,
+    "isActive": false
+  },
+  {
+    "semester": "HK6",
+    "code": "003443",
+    "name": "Khai thác dữ liệu và ứng dụng",
+    "credits": 3,
+    "isCompulsory": false,
+    "isActive": true
+  },
+  {
+    "semester": "HK6",
+    "code": "003773",
+    "name": "Lập trình mạng với Qt Framework",
+    "credits": 3,
+    "isCompulsory": false,
+    "isActive": false
+  },
+  {
+    "semester": "HK7",
+    "code": "001432",
+    "name": "Lập trình cho thiết bị di động",
+    "credits": 4,
+    "isCompulsory": true,
+    "isActive": true
+  },
+  {
+    "semester": "HK7",
+    "code": "002422",
+    "name": "Pháp luật đại cương",
+    "credits": 2,
+    "isCompulsory": true,
+    "isActive": true
+  },
+  {
+    "semester": "HK7",
+    "code": "003592",
+    "name": "Đảm bảo chất lượng và Kiểm thử phần mềm",
+    "credits": 3,
+    "isCompulsory": true,
+    "isActive": true
+  },
+  {
+    "semester": "HK7",
+    "code": "014169",
+    "name": "Lịch sử Đảng Cộng sản Việt Nam",
+    "credits": 2,
+    "isCompulsory": true,
+    "isActive": true
+  },
+  {
+    "semester": "HK7",
+    "code": "003621",
+    "name": "Lập trình WWW (Java)",
+    "credits": 4,
+    "isCompulsory": false,
+    "isActive": false
+  },
+  {
+    "semester": "HK7",
+    "code": "003774",
+    "name": "Phát triển ứng dụng Web với Qt Engine",
+    "credits": 4,
+    "isCompulsory": false,
+    "isActive": false
+  },
+  {
+    "semester": "HK7",
+    "code": "004147",
+    "name": "Lập trình WWW (.NET)",
+    "credits": 4,
+    "isCompulsory": false,
+    "isActive": false
+  },
+  {
+    "semester": "HK7",
+    "code": "004323",
+    "name": "Lập trình loTs",
+    "credits": 4,
+    "isCompulsory": false,
+    "isActive": false
+  },
+  {
+    "semester": "HK8",
+    "code": "000664",
+    "name": "Tư tưởng Hồ Chí Minh",
+    "credits": 2,
+    "isCompulsory": true,
+    "isActive": true
+  },
+  {
+    "semester": "HK8",
+    "code": "001549",
+    "name": "Kiến trúc và Thiết kế Phần mềm",
+    "credits": 4,
+    "isCompulsory": true,
+    "isActive": true
+  },
+  {
+    "semester": "HK8",
+    "code": "003147",
+    "name": "Công nghệ mới trong phát triển ứng dụng CNTT",
+    "credits": 3,
+    "isCompulsory": true,
+    "isActive": true
+  },
+  {
+    "semester": "HK8",
+    "code": "001366",
+    "name": "Automat \u0026 ngôn ngữ hình thức",
+    "credits": 3,
+    "isCompulsory": false,
+    "isActive": false
+  },
+  {
+    "semester": "HK8",
+    "code": "002329",
+    "name": "Nhập môn dữ liệu lớn",
+    "credits": 3,
+    "isCompulsory": false,
+    "isActive": false
+  },
+  {
+    "semester": "HK8",
+    "code": "002330",
+    "name": "Lập trình phân tích dữ liệu 2",
+    "credits": 3,
+    "isCompulsory": false,
+    "isActive": false
+  },
+  {
+    "semester": "HK8",
+    "code": "003453",
+    "name": "Tiếp thị điện tử",
+    "credits": 3,
+    "isCompulsory": false,
+    "isActive": false
+  },
+  {
+    "semester": "HK8",
+    "code": "003758",
+    "name": "Kiến trúc hướng dịch vụ và Điện toán đám mây",
+    "credits": 3,
+    "isCompulsory": false,
+    "isActive": false
+  },
+  {
+    "semester": "HK8",
+    "code": "003775",
+    "name": "Lập trình thiết bị di động nâng cao",
+    "credits": 3,
+    "isCompulsory": false,
+    "isActive": false
+  },
+  {
+    "semester": "HK8",
+    "code": "004056",
+    "name": "Quản lý dự án CNTT",
+    "credits": 3,
+    "isCompulsory": false,
+    "isActive": false
+  },
+  {
+    "semester": "HK9",
+    "code": "003098",
+    "name": "Thực tập doanh nghiệp",
+    "credits": 5,
+    "isCompulsory": true,
+    "isActive": true
+  },
+  {
+    "semester": "HK9",
+    "code": "014170",
+    "name": "Khóa luận tốt nghiệp",
+    "credits": 8,
+    "isCompulsory": true,
+    "isActive": true
+  }
+]
