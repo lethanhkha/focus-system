@@ -19,7 +19,9 @@ import javafx.stage.FileChooser;
 import java.io.File;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import javafx.beans.binding.Bindings;
 import java.util.stream.Collectors;
 
 /**
@@ -58,7 +60,19 @@ public class TaskController {
         // Setup table data wrapping
         filteredData = new FilteredList<>(taskList, p -> true);
         SortedList<Task> sortedData = new SortedList<>(filteredData);
-        sortedData.comparatorProperty().bind(view.getTable().comparatorProperty());
+        
+        Comparator<Task> defaultSort = Comparator
+            .comparing(Task::getDeadline, Comparator.nullsLast(Comparator.naturalOrder()))
+            .thenComparing(Task::getPriority, Comparator.nullsLast(Comparator.reverseOrder()));
+
+        sortedData.comparatorProperty().bind(Bindings.createObjectBinding(() -> {
+            Comparator<Task> tableComparator = view.getTable().getComparator();
+            if (tableComparator == null) {
+                return defaultSort;
+            }
+            return tableComparator.thenComparing(defaultSort);
+        }, view.getTable().comparatorProperty()));
+
         view.getTable().setItems(sortedData);
 
         // Bind Subject ComboBox in table
@@ -105,6 +119,7 @@ public class TaskController {
         // Initial Filter update & status bar
         updateFilter();
         updateStatusBar();
+        updateCounter();
     }
 
     private void setupTableEditEvents() {
@@ -204,7 +219,10 @@ public class TaskController {
             view.getTxtSearch().clear();
             view.getCbFilterStatus().setValue("Tất cả");
             view.getCbFilterTime().setValue("Tất cả");
+            view.getBtnToday().setSelected(false);
         });
+
+        view.getBtnToday().selectedProperty().addListener((o, old, val) -> updateFilter());
 
         view.getBtnExport().setOnAction(e -> handleExport());
         view.getBtnImport().setOnAction(e -> handleImport());
@@ -314,7 +332,14 @@ public class TaskController {
                 }
             }
 
-            return matchSearch && matchStatus && matchTime;
+            boolean passTodayView = true;
+            if (view.getBtnToday().isSelected()) {
+                passTodayView = !task.isCompleted() 
+                             && task.getDeadline() != null 
+                             && !task.getDeadline().isAfter(today);
+            }
+
+            return matchSearch && matchStatus && matchTime && passTodayView;
         });
 
         updateStatusBar();
@@ -444,6 +469,7 @@ public class TaskController {
         taskList.addAll(freshTasks);
         // attachCheckboxListener được gắn tự động qua taskList ListChangeListener
         updateFilter();
+        updateCounter();
         view.getTable().refresh();
         AlertHelper.showSuccess("🔄 Đã làm mới dữ liệu từ tasks.json!");
     }
@@ -451,11 +477,26 @@ public class TaskController {
     /** Gắn listener vào completedProperty của mọt task: khi tick/untick -> lưu JSON + refresh table. */
     private void attachCheckboxListener(Task task) {
         javafx.beans.value.ChangeListener<Boolean> listener = (obs, oldVal, newVal) -> {
+            if (newVal) {
+                task.setCompletedAt(LocalDate.now());
+            } else {
+                task.setCompletedAt(null);
+            }
             saveAndRefresh();
+            updateCounter();
             view.getTable().refresh(); // Làm mới cột Nội dung để hiện strikethrough
         };
         checkboxListeners.put(task, listener);
         task.completedProperty().addListener(listener);
+    }
+
+    private void updateCounter() {
+        LocalDate today = LocalDate.now();
+        long count = taskList.stream()
+                .filter(Task::isCompleted)
+                .filter(t -> t.getCompletedAt() != null && t.getCompletedAt().isEqual(today))
+                .count();
+        view.getLblCompletedToday().setText("🔥 Đã hoàn thành hôm nay: " + count);
     }
 
     /** Gắn listener cho tất cả tasks hiện tại trong list. */

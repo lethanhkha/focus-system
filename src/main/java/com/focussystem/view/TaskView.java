@@ -58,6 +58,8 @@ public class TaskView {
     private ComboBox<String> cbFilterStatus;
     private ComboBox<String> cbFilterTime;
     private Button btnReset, btnExport, btnImport, btnRefresh;
+    private ToggleButton btnToday;
+    private Label lblCompletedToday;
 
     // Input Form
     private ComboBox<String> cbSemester;
@@ -98,8 +100,18 @@ public class TaskView {
 
                     LocalDate today = LocalDate.now();
                     boolean isCompleted = "Hoàn thành".equals(task.getStatus());
-                    boolean isOverdue = task.getDueDate() != null && task.getDueDate().isBefore(today) && !isCompleted;
-                    boolean isToday = task.getDueDate() != null && task.getDueDate().isEqual(today) && !isCompleted;
+                    
+                    // Logic tính Overdue & Today qua Deadline
+                    boolean isOverdue = task.getDeadline() != null && task.getDeadline().isBefore(today) && !isCompleted;
+                    boolean isToday = task.getDeadline() != null && task.getDeadline().isEqual(today) && !isCompleted;
+
+                    if (isOverdue) {
+                        setStyle("-fx-text-fill: red; -fx-text-inner-color: red;");
+                    } else if (isToday) {
+                        setStyle("-fx-font-weight: bold;");
+                    } else {
+                        setStyle("");
+                    }
 
                     pseudoClassStateChanged(COMPLETED_PSEUDO_CLASS, isCompleted);
                     pseudoClassStateChanged(OVERDUE_PSEUDO_CLASS, isOverdue);
@@ -254,6 +266,13 @@ public class TaskView {
         btnRefresh.getStyleClass().add("btn-reset");
         btnRefresh.setTooltip(new Tooltip("Tải lại dữ liệu từ file tasks.json"));
 
+        btnToday = new ToggleButton("🌟 Hôm nay");
+        btnToday.setStyle("-fx-font-weight: bold; -fx-text-fill: #2c3e50;");
+        btnToday.setTooltip(new Tooltip("Chỉ hiển thị các task chưa xong và có Deadline là Hôm nay hoặc Đã quá hạn"));
+
+        lblCompletedToday = new Label("🔥 Đã hoàn thành hôm nay: 0");
+        lblCompletedToday.setStyle("-fx-font-weight: bold; -fx-text-fill: #e67e22; -fx-font-size: 14px; -fx-padding: 0 10 0 0;");
+
         Separator separator = new Separator(Orientation.VERTICAL);
 
         // Spacer to push export/import to the right
@@ -266,8 +285,9 @@ public class TaskView {
                 new Label("Thời gian:"), cbFilterTime,
                 btnReset,
                 spacer,
+                lblCompletedToday,
                 separator,
-                btnRefresh, btnExport, btnImport
+                btnToday, btnRefresh, btnExport, btnImport
         );
         filterBar.setAlignment(Pos.CENTER_LEFT);
         filterBar.getStyleClass().add("filter-bar");
@@ -357,6 +377,8 @@ public class TaskView {
     public Button getBtnExport() { return btnExport; }
     public Button getBtnImport() { return btnImport; }
     public Button getBtnRefresh() { return btnRefresh; }
+    public ToggleButton getBtnToday() { return btnToday; }
+    public Label getLblCompletedToday() { return lblCompletedToday; }
 
     public ComboBox<String> getCbSemester() { return cbSemester; }
     public ComboBox<Subject> getCbSubject() { return cbSubject; }

@@ -14,6 +14,7 @@ public class Task {
     private LocalDate dueDate;   // Hạn chót
     private Priority priority;   // Mức độ ưu tiên
     private LocalDate deadline;  // Ngày đến hạn
+    private LocalDate completedAt; // Ngày hoàn thành
     private String status;      // Lưu vào JSON: "Chưa hoàn thành" | "Hoàn thành"
 
     // JavaFX property for CheckBoxTableCell binding (transient – NOT serialized by Gson)
@@ -105,6 +106,9 @@ public class Task {
 
     public Priority getPriority() { return priority; }
     public void setPriority(Priority priority) { this.priority = priority; }
+
+    public LocalDate getCompletedAt() { return completedAt; }
+    public void setCompletedAt(LocalDate completedAt) { this.completedAt = completedAt; }
 
     public String getStatus() { return status; }
     public void setStatus(String status) {
