@@ -168,9 +168,18 @@ public class TaskController {
         });
         // colStatus: không dùng OnEditCommit nữa – CheckBoxTableCell tự bind vào completedProperty()
 
-        // Delete via key
+        // Keyboard shortcuts for TableView
         view.getTable().setOnKeyPressed(e -> {
-            if (e.getCode() == KeyCode.DELETE) handleDelete();
+            if (e.getCode() == KeyCode.DELETE || e.getCode() == KeyCode.BACK_SPACE) {
+                handleDelete();
+                e.consume();
+            } else if (e.getCode() == KeyCode.SPACE) {
+                Task selected = view.getTable().getSelectionModel().getSelectedItem();
+                if (selected != null) {
+                    selected.setCompleted(!selected.isCompleted());
+                }
+                e.consume();
+            }
         });
 
         // --- Task 3: Deselect khi click vào vùng trống của Table ---
