@@ -1,6 +1,7 @@
 package com.focussystem.view;
 
 import com.focussystem.component.DateEditingCell;
+import com.focussystem.model.Priority;
 import com.focussystem.model.Subject;
 import com.focussystem.model.Task;
 import javafx.beans.property.SimpleObjectProperty;
@@ -16,7 +17,6 @@ import javafx.scene.control.cell.ComboBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
@@ -46,6 +46,7 @@ public class TaskView {
     private TableColumn<Task, String> colSubject;
     private TableColumn<Task, String> colTitle;
     private TableColumn<Task, String> colDesc;
+    private TableColumn<Task, Priority> colPriority;
     private TableColumn<Task, LocalDate> colStart;
     private TableColumn<Task, LocalDate> colDue;
     private TableColumn<Task, LocalDate> colDeadline;
@@ -61,6 +62,7 @@ public class TaskView {
     // Input Form
     private ComboBox<String> cbSemester;
     private ComboBox<Subject> cbSubject;
+    private ComboBox<Priority> cbPriority;
     private TextField txtTitle;
     private TextField txtDesc;
     private DatePicker dpStart;
@@ -145,6 +147,34 @@ public class TaskView {
         colDesc.setPrefWidth(200);
         colDesc.setCellFactory(TextFieldTableCell.forTableColumn());
 
+        colPriority = new TableColumn<>("Mức độ");
+        colPriority.setCellValueFactory(new PropertyValueFactory<>("priority"));
+        colPriority.setPrefWidth(90);
+        colPriority.setCellFactory(column -> new ComboBoxTableCell<Task, Priority>(Priority.values()) {
+            @Override
+            public void updateItem(Priority item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null) {
+                    setText(null);
+                    setGraphic(null);
+                    setStyle("");
+                } else {
+                    setText(item.name());
+                    switch (item) {
+                        case HIGH:
+                            setStyle("-fx-text-fill: white; -fx-background-color: #e74c3c; -fx-font-weight: bold; -fx-alignment: center; -fx-padding: 2; -fx-background-radius: 4; -fx-background-insets: 2;");
+                            break;
+                        case MEDIUM:
+                            setStyle("-fx-text-fill: black; -fx-background-color: #f1c40f; -fx-font-weight: bold; -fx-alignment: center; -fx-padding: 2; -fx-background-radius: 4; -fx-background-insets: 2;");
+                            break;
+                        case LOW:
+                            setStyle("-fx-text-fill: white; -fx-background-color: #2ecc71; -fx-font-weight: bold; -fx-alignment: center; -fx-padding: 2; -fx-background-radius: 4; -fx-background-insets: 2;");
+                            break;
+                    }
+                }
+            }
+        });
+
         colStart = new TableColumn<>("Bắt đầu");
         colStart.setCellValueFactory(new PropertyValueFactory<>("startDate"));
         colStart.setPrefWidth(110);
@@ -192,8 +222,8 @@ public class TaskView {
         colStatus.setEditable(true);
         colStatus.setSortable(false);
 
-        table.getColumns().setAll(java.util.List.of(colSubject, colTitle, colDesc, colStart, colDue, colDeadline, colRemaining, colStatus));
-        VBox.setVgrow(table, Priority.ALWAYS);
+        table.getColumns().setAll(java.util.List.of(colSubject, colTitle, colDesc, colPriority, colStart, colDue, colDeadline, colRemaining, colStatus));
+        VBox.setVgrow(table, javafx.scene.layout.Priority.ALWAYS);
 
         // --- FILTER BAR ---
         txtSearch = new TextField();
@@ -228,7 +258,7 @@ public class TaskView {
 
         // Spacer to push export/import to the right
         Region spacer = new Region();
-        HBox.setHgrow(spacer, Priority.ALWAYS);
+        HBox.setHgrow(spacer, javafx.scene.layout.Priority.ALWAYS);
 
         HBox filterBar = new HBox(10,
                 new Label("Tìm:"), txtSearch,
@@ -249,6 +279,10 @@ public class TaskView {
         cbSubject = new ComboBox<>();
         cbSubject.setPromptText("Chọn môn...");
         cbSubject.setPrefWidth(160);
+
+        cbPriority = new ComboBox<>(FXCollections.observableArrayList(Priority.values()));
+        cbPriority.setValue(Priority.MEDIUM);
+        cbPriority.setPrefWidth(100);
 
         txtTitle = new TextField();
         txtTitle.setPromptText("Nội dung công việc...");
@@ -280,7 +314,7 @@ public class TaskView {
         btnDeleteAll.getStyleClass().add("btn-danger");
         btnDeleteAll.setStyle("-fx-background-color: #c0392b;"); // đỏ đậm hơn để phân biệt
 
-        HBox row1 = new HBox(10, new Label("Học kỳ:"), cbSemester, new Label("Môn:"), cbSubject);
+        HBox row1 = new HBox(10, new Label("Học kỳ:"), cbSemester, new Label("Môn:"), cbSubject, new Label("Mức độ:"), cbPriority);
         row1.setAlignment(Pos.CENTER_LEFT);
 
         HBox row2 = new HBox(8, txtTitle, txtDesc, dpStart, new Label("→"), dpDue, new Label("⚑"), dpDeadline, btnAdd, btnDelete, btnDeleteAll);
@@ -310,6 +344,7 @@ public class TaskView {
     public TableColumn<Task, String> getColSubject() { return colSubject; }
     public TableColumn<Task, String> getColTitle() { return colTitle; }
     public TableColumn<Task, String> getColDesc() { return colDesc; }
+    public TableColumn<Task, Priority> getColPriority() { return colPriority; }
     public TableColumn<Task, LocalDate> getColStart() { return colStart; }
     public TableColumn<Task, LocalDate> getColDue() { return colDue; }
     public TableColumn<Task, LocalDate> getColDeadline() { return colDeadline; }
@@ -325,6 +360,7 @@ public class TaskView {
 
     public ComboBox<String> getCbSemester() { return cbSemester; }
     public ComboBox<Subject> getCbSubject() { return cbSubject; }
+    public ComboBox<Priority> getCbPriority() { return cbPriority; }
     public TextField getTxtTitle() { return txtTitle; }
     public TextField getTxtDesc() { return txtDesc; }
     public DatePicker getDpStart() { return dpStart; }

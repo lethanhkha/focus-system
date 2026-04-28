@@ -124,6 +124,11 @@ public class TaskController {
             saveAndRefresh();
         });
 
+        view.getColPriority().setOnEditCommit(e -> {
+            e.getRowValue().setPriority(e.getNewValue());
+            saveAndRefresh();
+        });
+
         view.getColStart().setOnEditCommit(e -> {
             e.getRowValue().setStartDate(e.getNewValue());
             saveAndRefresh();
@@ -356,7 +361,7 @@ public class TaskController {
             return;
         }
 
-        Task newTask = new Task(titleText.trim(), sub.getName(), view.getDpStart().getValue(), view.getDpDue().getValue(), view.getDpDeadline().getValue(), view.getTxtDesc().getText());
+        Task newTask = new Task(titleText.trim(), sub.getName(), view.getDpStart().getValue(), view.getDpDue().getValue(), view.getDpDeadline().getValue(), view.getCbPriority().getValue(), view.getTxtDesc().getText());
         newTask.setStatus("Chưa hoàn thành");
         taskList.add(newTask);
         saveAndRefresh();

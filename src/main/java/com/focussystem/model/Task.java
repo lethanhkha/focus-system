@@ -12,6 +12,7 @@ public class Task {
     private String description; // Ghi chú
     private LocalDate startDate; // Ngày bắt đầu
     private LocalDate dueDate;   // Hạn chót
+    private Priority priority;   // Mức độ ưu tiên
     private LocalDate deadline;  // Ngày đến hạn
     private String status;      // Lưu vào JSON: "Chưa hoàn thành" | "Hoàn thành"
 
@@ -19,12 +20,13 @@ public class Task {
     private transient BooleanProperty completed;
 
     // Constructor cập nhật 5 tham số
-    public Task(String title, String subject, LocalDate startDate, LocalDate dueDate, LocalDate deadline, String description) {
+    public Task(String title, String subject, LocalDate startDate, LocalDate dueDate, LocalDate deadline, Priority priority, String description) {
         this.title = title;
         this.subject = subject;
         this.startDate = startDate;
         this.dueDate = dueDate;
         this.deadline = deadline;
+        this.priority = priority != null ? priority : Priority.MEDIUM;
         this.description = description;
         this.status = "Chưa hoàn thành"; // Mặc định trạng thái ban đầu
         initCompleted();
@@ -44,6 +46,11 @@ public class Task {
         // Tương thích ngược: Nếu task cũ chưa có deadline, gán bằng dueDate
         if (this.deadline == null) {
             this.deadline = this.dueDate;
+        }
+
+        // Tương thích ngược: Mức độ ưu tiên mặc định cho task cũ
+        if (this.priority == null) {
+            this.priority = Priority.MEDIUM;
         }
         
         boolean isTick = "Hoàn thành".equals(this.status);
@@ -95,6 +102,9 @@ public class Task {
 
     public LocalDate getDeadline() { return deadline; }
     public void setDeadline(LocalDate deadline) { this.deadline = deadline; }
+
+    public Priority getPriority() { return priority; }
+    public void setPriority(Priority priority) { this.priority = priority; }
 
     public String getStatus() { return status; }
     public void setStatus(String status) {
