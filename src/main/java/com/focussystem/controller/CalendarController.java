@@ -98,18 +98,9 @@ public class CalendarController {
 
     private VBox createDayCell(LocalDate date) {
         VBox cell = new VBox(2);
-        cell.getStyleClass().add("calendar-cell");
         cell.setPadding(new Insets(4));
         
-        if (!YearMonth.from(date).equals(currentYearMonth)) {
-            cell.getStyleClass().add("calendar-cell-other-month");
-        }
-        if (date.isEqual(LocalDate.now())) {
-            cell.getStyleClass().add("calendar-today");
-        }
-
         Label dateLabel = new Label(String.valueOf(date.getDayOfMonth()));
-        dateLabel.setStyle("-fx-font-weight: bold;");
         cell.getChildren().add(dateLabel);
 
         // Find tasks starting on this date
@@ -123,13 +114,6 @@ public class CalendarController {
             taskLbl.setMaxWidth(Double.MAX_VALUE);
             taskLbl.setWrapText(false);
             
-            // Apply styles based on completion
-            if (task.isCompleted()) {
-                taskLbl.getStyleClass().add("calendar-task-completed");
-            } else {
-                taskLbl.getStyleClass().add("calendar-task-pending");
-            }
-            
             String tooltipText = "Task: " + task.getTitle() + "\n" +
                                  "Môn học: " + task.getSubject() + "\n" +
                                  "Ngày bắt đầu: " + (task.getStartDate() != null ? task.getStartDate().toString() : "N/A") + "\n" +
@@ -138,7 +122,6 @@ public class CalendarController {
                                  "Ghi chú: " + (task.getDescription() != null && !task.getDescription().isEmpty() ? task.getDescription() : "Không có");
             
             Tooltip tt = new Tooltip(tooltipText);
-            tt.setStyle("-fx-font-size: 12px;");
             Tooltip.install(taskLbl, tt);
             
             tasksBox.getChildren().add(taskLbl);
@@ -149,7 +132,6 @@ public class CalendarController {
         scroll.setFitToWidth(true);
         scroll.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         scroll.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
-        scroll.setStyle("-fx-background-color: transparent; -fx-background: transparent; -fx-padding: 0;");
         
         VBox.setVgrow(scroll, Priority.ALWAYS);
         cell.getChildren().add(scroll);

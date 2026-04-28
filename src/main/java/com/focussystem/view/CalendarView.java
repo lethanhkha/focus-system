@@ -27,18 +27,14 @@ public class CalendarView {
         
         // --- HEADER ---
         btnPrevMonth = new Button("◀");
-        btnPrevMonth.getStyleClass().add("btn-secondary");
         
         lblMonthYear = new Label("Tháng X Năm YYYY");
-        lblMonthYear.setStyle("-fx-font-size: 18px; -fx-font-weight: bold;");
         lblMonthYear.setPrefWidth(200);
         lblMonthYear.setAlignment(Pos.CENTER);
         
         btnNextMonth = new Button("▶");
-        btnNextMonth.getStyleClass().add("btn-secondary");
         
         btnToday = new Button("Hôm nay");
-        btnToday.getStyleClass().add("btn-primary");
         
         Region spacer1 = new Region();
         HBox.setHgrow(spacer1, Priority.ALWAYS);
@@ -66,10 +62,8 @@ public class CalendarView {
         String[] daysOfWeek = {"Thứ 2", "Thứ 3", "Thứ 4", "Thứ 5", "Thứ 6", "Thứ 7", "Chủ nhật"};
         for (int i = 0; i < 7; i++) {
             Label dayLabel = new Label(daysOfWeek[i]);
-            dayLabel.setStyle("-fx-font-weight: bold; -fx-padding: 5;");
             dayLabel.setMaxWidth(Double.MAX_VALUE);
             dayLabel.setAlignment(Pos.CENTER);
-            dayLabel.getStyleClass().add("calendar-day-header");
             calendarGrid.add(dayLabel, i, 0);
         }
         

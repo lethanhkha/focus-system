@@ -7,7 +7,6 @@ import com.focussystem.model.Task;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.css.PseudoClass;
 import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
@@ -27,17 +26,12 @@ import java.util.stream.Collectors;
 
 /**
  * TaskView: Builds the entire Task management UI including:
- * - Task TableView with conditional row styling (PseudoClass)
+ * - Task TableView
  * - Filter bar (search, status, time, export/import)
  * - Input form (semester, subject, title, description, dates)
  * - Status bar (task summary label)
  */
 public class TaskView {
-
-    // PseudoClasses for conditional row styling
-    private static final PseudoClass OVERDUE_PSEUDO_CLASS = PseudoClass.getPseudoClass("overdue");
-    private static final PseudoClass COMPLETED_PSEUDO_CLASS = PseudoClass.getPseudoClass("completed");
-    private static final PseudoClass TODAY_PSEUDO_CLASS = PseudoClass.getPseudoClass("today");
 
     private VBox layout;
 
@@ -83,44 +77,6 @@ public class TaskView {
         table = new TableView<>();
         table.setEditable(true);
 
-        // --- Row Factory with PseudoClass-based conditional styling ---
-        table.setRowFactory(tv -> {
-            TableRow<Task> row = new TableRow<>() {
-                @Override
-                protected void updateItem(Task task, boolean empty) {
-                    super.updateItem(task, empty);
-                    // Clear all pseudo-classes first
-                    pseudoClassStateChanged(OVERDUE_PSEUDO_CLASS, false);
-                    pseudoClassStateChanged(COMPLETED_PSEUDO_CLASS, false);
-                    pseudoClassStateChanged(TODAY_PSEUDO_CLASS, false);
-
-                    if (empty || task == null) {
-                        return;
-                    }
-
-                    LocalDate today = LocalDate.now();
-                    boolean isCompleted = "Hoàn thành".equals(task.getStatus());
-                    
-                    // Logic tính Overdue & Today qua Deadline
-                    boolean isOverdue = task.getDeadline() != null && task.getDeadline().isBefore(today) && !isCompleted;
-                    boolean isToday = task.getDeadline() != null && task.getDeadline().isEqual(today) && !isCompleted;
-
-                    if (isOverdue) {
-                        setStyle("-fx-text-fill: red; -fx-text-inner-color: red;");
-                    } else if (isToday) {
-                        setStyle("-fx-font-weight: bold;");
-                    } else {
-                        setStyle("");
-                    }
-
-                    pseudoClassStateChanged(COMPLETED_PSEUDO_CLASS, isCompleted);
-                    pseudoClassStateChanged(OVERDUE_PSEUDO_CLASS, isOverdue);
-                    pseudoClassStateChanged(TODAY_PSEUDO_CLASS, isToday);
-                }
-            };
-            return row;
-        });
-
         // --- COLUMNS ---
         colSubject = new TableColumn<>("Môn học");
         colSubject.setCellValueFactory(new PropertyValueFactory<>("subject"));
@@ -162,30 +118,7 @@ public class TaskView {
         colPriority = new TableColumn<>("Mức độ");
         colPriority.setCellValueFactory(new PropertyValueFactory<>("priority"));
         colPriority.setPrefWidth(90);
-        colPriority.setCellFactory(column -> new ComboBoxTableCell<Task, Priority>(Priority.values()) {
-            @Override
-            public void updateItem(Priority item, boolean empty) {
-                super.updateItem(item, empty);
-                if (empty || item == null) {
-                    setText(null);
-                    setGraphic(null);
-                    setStyle("");
-                } else {
-                    setText(item.name());
-                    switch (item) {
-                        case HIGH:
-                            setStyle("-fx-text-fill: white; -fx-background-color: #e74c3c; -fx-font-weight: bold; -fx-alignment: center; -fx-padding: 2; -fx-background-radius: 4; -fx-background-insets: 2;");
-                            break;
-                        case MEDIUM:
-                            setStyle("-fx-text-fill: black; -fx-background-color: #f1c40f; -fx-font-weight: bold; -fx-alignment: center; -fx-padding: 2; -fx-background-radius: 4; -fx-background-insets: 2;");
-                            break;
-                        case LOW:
-                            setStyle("-fx-text-fill: white; -fx-background-color: #2ecc71; -fx-font-weight: bold; -fx-alignment: center; -fx-padding: 2; -fx-background-radius: 4; -fx-background-insets: 2;");
-                            break;
-                    }
-                }
-            }
-        });
+        colPriority.setCellFactory(column -> new ComboBoxTableCell<Task, Priority>(Priority.values()));
 
         colStart = new TableColumn<>("Bắt đầu");
         colStart.setCellValueFactory(new PropertyValueFactory<>("startDate"));
@@ -211,18 +144,8 @@ public class TaskView {
                 super.updateItem(item, empty);
                 if (empty || item == null) {
                     setText(null);
-                    setStyle("");
-                    getStyleClass().removeAll("urgent-task", "warning-task", "normal-task");
                 } else {
                     setText(item + " ngày");
-                    getStyleClass().removeAll("urgent-task", "warning-task", "normal-task");
-                    if (item < 0) {
-                        getStyleClass().add("urgent-task");
-                    } else if (item <= 2) {
-                        getStyleClass().add("warning-task");
-                    } else {
-                        getStyleClass().add("normal-task");
-                    }
                 }
             }
         });
@@ -241,37 +164,28 @@ public class TaskView {
         txtSearch = new TextField();
         txtSearch.setPromptText("\uD83D\uDD0D Tìm tên task, môn, ghi chú...");
         txtSearch.setPrefWidth(240);
-        txtSearch.getStyleClass().add("search-box");
 
         cbFilterStatus = new ComboBox<>();
         cbFilterStatus.setItems(FXCollections.observableArrayList("Tất cả", "Chưa hoàn thành", "Hoàn thành"));
         cbFilterStatus.setValue("Tất cả");
-        cbFilterStatus.getStyleClass().add("filter-combo");
 
         cbFilterTime = new ComboBox<>();
         cbFilterTime.setItems(FXCollections.observableArrayList("Tất cả", "Hôm nay", "Tuần này", "Quá hạn", "Tương lai"));
         cbFilterTime.setValue("Tất cả");
-        cbFilterTime.getStyleClass().add("filter-combo");
 
         btnReset = new Button("⟳ Xóa lọc");
-        btnReset.getStyleClass().add("btn-reset");
 
         btnExport = new Button("⬆ Xuất File");
-        btnExport.getStyleClass().add("btn-secondary");
 
         btnImport = new Button("⬇ Nạp File");
-        btnImport.getStyleClass().add("btn-secondary");
 
         btnRefresh = new Button("🔄 Cập nhật");
-        btnRefresh.getStyleClass().add("btn-reset");
         btnRefresh.setTooltip(new Tooltip("Tải lại dữ liệu từ file tasks.json"));
 
         btnToday = new ToggleButton("🌟 Hôm nay");
-        btnToday.setStyle("-fx-font-weight: bold; -fx-text-fill: #2c3e50;");
         btnToday.setTooltip(new Tooltip("Chỉ hiển thị các task chưa xong và có Deadline là Hôm nay hoặc Đã quá hạn"));
 
         lblCompletedToday = new Label("🔥 Đã hoàn thành hôm nay: 0");
-        lblCompletedToday.setStyle("-fx-font-weight: bold; -fx-text-fill: #e67e22; -fx-font-size: 14px; -fx-padding: 0 10 0 0;");
 
         Separator separator = new Separator(Orientation.VERTICAL);
 
@@ -290,7 +204,6 @@ public class TaskView {
                 btnToday, btnRefresh, btnExport, btnImport
         );
         filterBar.setAlignment(Pos.CENTER_LEFT);
-        filterBar.getStyleClass().add("filter-bar");
 
         // --- INPUT FORM ---
         cbSemester = new ComboBox<>();
@@ -325,14 +238,10 @@ public class TaskView {
         dpDeadline.setPrefWidth(110);
 
         btnAdd = new Button("✚ Thêm Task");
-        btnAdd.getStyleClass().add("btn-primary");
 
         btnDelete = new Button("✕ Xóa Task");
-        btnDelete.getStyleClass().add("btn-danger");
 
-        btnDeleteAll = new Button("🗑 Xóa tất cả");
-        btnDeleteAll.getStyleClass().add("btn-danger");
-        btnDeleteAll.setStyle("-fx-background-color: #c0392b;"); // đỏ đậm hơn để phân biệt
+        btnDeleteAll = new Button("🗑 Xóa tất cả"); // đỏ đậm hơn để phân biệt
 
         HBox row1 = new HBox(10, new Label("Học kỳ:"), cbSemester, new Label("Môn:"), cbSubject, new Label("Mức độ:"), cbPriority);
         row1.setAlignment(Pos.CENTER_LEFT);
@@ -341,17 +250,14 @@ public class TaskView {
         row2.setAlignment(Pos.CENTER_LEFT);
 
         VBox inputForm = new VBox(8, row1, row2);
-        inputForm.getStyleClass().add("input-form");
 
         // --- STATUS BAR ---
         lblStatusBar = new Label("Tổng: 0 task");
         HBox statusBar = new HBox(lblStatusBar);
-        statusBar.getStyleClass().add("status-bar");
         statusBar.setAlignment(Pos.CENTER_LEFT);
 
         // --- HEADER ---
         Label header = new Label("📋 Danh sách nhiệm vụ & Bộ lọc");
-        header.setStyle("-fx-font-size: 16px; -fx-font-weight: bold; -fx-padding: 8 0 0 8;");
 
         layout = new VBox(8, header, filterBar, table, inputForm, statusBar);
         layout.setPadding(new Insets(4));
@@ -399,10 +305,9 @@ public class TaskView {
      * then automatically restores it. This provides a visual red-border flash effect.
      */
     public void flashError(Control control) {
-        control.getStyleClass().add("input-error");
+        // Visual feedback for error - would use CSS class if available
         // Auto-remove after 1.5 seconds
         javafx.animation.PauseTransition pause = new javafx.animation.PauseTransition(javafx.util.Duration.millis(1500));
-        pause.setOnFinished(e -> control.getStyleClass().remove("input-error"));
         pause.play();
     }
 

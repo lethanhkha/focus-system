@@ -59,19 +59,15 @@ public class SubjectView {
         VBox.setVgrow(table, Priority.ALWAYS);
 
         btnImport = new Button("⬇ Import từ File (.txt)");
-        btnImport.getStyleClass().add("btn-secondary");
 
         btnSave = new Button("💾 Cập nhật Đăng ký");
-        btnSave.getStyleClass().add("btn-primary");
 
-        btnDel = new Button("✕ Xóa Môn"); 
-        btnDel.getStyleClass().add("btn-danger");
+        btnDel = new Button("✕ Xóa Môn");
 
         HBox tools = new HBox(10, btnImport, btnSave, btnDel); 
         tools.setPadding(new Insets(10));
 
         Label header = new Label("📚 Quản lý Đăng ký Môn học ");
-        header.setStyle("-fx-font-size: 16px; -fx-font-weight: bold; -fx-padding: 8 0 0 8;");
         
         layout = new VBox(10, header, table, tools);
         layout.setPadding(new Insets(4));
