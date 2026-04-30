@@ -98,6 +98,66 @@ java -jar target/focus-system-1.0-SNAPSHOT.jar
 **Trải nghiệm người dùng (UX):**
 
 - Click ra vùng trống để bỏ chọn dòng đang highlight trong bảng.
+
+## 8) Phát triển và đóng góp
+
+Nếu bạn muốn chỉnh sửa code:
+
+```bash
+git clone https://github.com/yourusername/focus-system.git
+cd focus-system
+mvn clean install
+```
+
+Tuân thủ cấu trúc MVC hiện có khi thêm tính năng mới. Viết code sạch, có comment và pass được Maven build.
+
+## 9) Roadmap và Kế hoạch phát triển
+
+**Phiên bản hiện tại (v1.0):**
+
+- ✅ Quản lý task và môn học cơ bản
+- ✅ Lưu trữ dữ liệu local (JSON)
+- ✅ Giao diện JavaFX với lọc và tìm kiếm
+
+**Phiên bản sắp tới (v2.0 - Multi-user & Cloud):**
+
+- 🔄 **Authentication & Authorization**
+  - Hệ thống đăng ký (Register) và đăng nhập (Login)
+  - Xác thực tài khoản (Email verification, Password reset)
+  - Phân quyền người dùng (User roles & permissions)
+
+- 🔄 **Database Upgrade**
+  - Chuyển từ JSON file sang SQL Database (MySQL/PostgreSQL)
+  - Tối ưu hóa truy vấn dữ liệu
+  - Hỗ trợ backup và restore dữ liệu
+
+- 🔄 **Multi-user Support**
+  - Mỗi người dùng có workspace riêng
+  - Hỗ trợ chia sẻ task với bạn bè (Share feature)
+  - Thông báo và reminder (Notification system)
+
+- 🔄 **Mở rộng tính năng**
+  - Thêm label và tag cho task
+  - Hỗ trợ tạo timeline/roadmap
+  - Export báo cáo thống kê (PDF/Excel)
+  - Dark mode UI
+
+- 🔄 **Công nghệ nâng cấp**
+  - API Backend (REST/GraphQL)
+  - Đồng bộ dữ liệu real-time
+  - Mobile app (React Native/Flutter)
+
+## 10) Liên hệ và hỗ trợ
+
+Nếu có câu hỏi hoặc phát hiện lỗi, vui lòng:
+
+- Tạo **Issue** trên GitHub
+- Gửi **Pull Request** nếu có đóng góp
+
+---
+
+**Made with ❤️ for students who want to stay focused.**
+
 - Nút Refresh để tải lại dữ liệu mới nhất từ file JSON.
 
 ## 8) Build Artifact và các file cần bỏ qua
