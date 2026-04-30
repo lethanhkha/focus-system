@@ -4,18 +4,20 @@ import com.focussystem.model.Subject;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import java.util.function.Consumer;
 
 public class SubjectView {
     private VBox layout;
     private TableView<Subject> table;
-    private Button btnImport, btnSave, btnDel;
+    private Button btnImport, btnSave, btnDel, btnTemplate;
     private Consumer<Subject> onActiveChanged;
 
     public SubjectView() {
@@ -60,22 +62,33 @@ public class SubjectView {
 
         btnImport = new Button("⬇ Import từ File (.txt)");
 
+        btnTemplate = new Button("📄 Tải file mẫu");
+
         btnSave = new Button("💾 Cập nhật Đăng ký");
+        btnSave.getStyleClass().add("btn-primary");
 
         btnDel = new Button("✕ Xóa Môn");
+        btnDel.getStyleClass().add("btn-danger");
 
-        HBox tools = new HBox(10, btnImport, btnSave, btnDel); 
-        tools.setPadding(new Insets(10));
+        HBox toolbar = new HBox(10, btnImport, btnTemplate, btnSave, btnDel);
+        toolbar.getStyleClass().add("toolbar");
+        toolbar.setAlignment(Pos.CENTER_RIGHT);
 
         Label header = new Label("📚 Quản lý Đăng ký Môn học ");
-        
-        layout = new VBox(10, header, table, tools);
+        Region spacer = new Region();
+        HBox.setHgrow(spacer, Priority.ALWAYS);
+        HBox headerRow = new HBox(10, header, spacer, toolbar);
+        headerRow.setAlignment(Pos.CENTER_LEFT);
+        headerRow.setPadding(new Insets(4, 0, 4, 0));
+
+        layout = new VBox(10, headerRow, table);
         layout.setPadding(new Insets(4));
     }
 
     public VBox getLayout() { return layout; }
     public TableView<Subject> getTable() { return table; }
     public Button getBtnImport() { return btnImport; }
+    public Button getBtnTemplate() { return btnTemplate; }
     public Button getBtnSave() { return btnSave; }
     public Button getBtnDel() { return btnDel; }
     public void setOnActiveChanged(Consumer<Subject> listener) { this.onActiveChanged = listener; }

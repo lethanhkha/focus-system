@@ -45,6 +45,13 @@ public class MainController {
     public Scene getPrimaryScene() {
         Scene scene = new Scene(mainView.getLayout(), 1200, 750);
 
+        var cssUrl = getClass().getResource("/css/styles.css");
+        if (cssUrl != null) {
+            scene.getStylesheets().add(cssUrl.toExternalForm());
+        } else {
+            System.err.println("Warning: Cannot load css/styles.css");
+        }
+
         // Set up click outside table to cancel edit
         scene.setOnMouseClicked(event -> {
             Object target = event.getTarget();

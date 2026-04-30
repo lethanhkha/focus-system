@@ -1,14 +1,20 @@
 package com.focussystem.view;
 
-import javafx.scene.control.Tab;
-import javafx.scene.control.TabPane;
+import javafx.scene.Node;
+import javafx.scene.control.Label;
+import javafx.scene.control.ToggleButton;
+import javafx.scene.control.ToggleGroup;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 
 public class MainView {
-    private TabPane layout;
+    private BorderPane layout;
     private VBox taskTabContent;
     private VBox subjectTabContent;
     private VBox calendarTabContent;
+
+    private StackPane contentArea;
 
     public MainView(VBox taskTabContent, VBox subjectTabContent, VBox calendarTabContent) {
         this.taskTabContent = taskTabContent;
@@ -18,21 +24,51 @@ public class MainView {
     }
 
     private void buildUI() {
-        layout = new TabPane();
+        layout = new BorderPane();
+        layout.getStyleClass().add("app-root");
 
-        Tab taskTab = new Tab("Quản lý Task", taskTabContent);
-        taskTab.setClosable(false);
+        Label title = new Label("Focus System");
+        title.getStyleClass().add("sidebar-title");
 
-        Tab subjectTab = new Tab("Quản lý Môn học", subjectTabContent);
-        subjectTab.setClosable(false);
+        ToggleGroup navGroup = new ToggleGroup();
+        ToggleButton btnTasks = createNavButton("Quản lý Task", navGroup, taskTabContent);
+        ToggleButton btnSubjects = createNavButton("Quản lý Môn học", navGroup, subjectTabContent);
+        ToggleButton btnCalendar = createNavButton("Lịch làm việc", navGroup, calendarTabContent);
 
-        Tab calendarTab = new Tab("Lịch làm việc", calendarTabContent);
-        calendarTab.setClosable(false);
+        VBox navBox = new VBox(6, btnTasks, btnSubjects, btnCalendar);
+        navBox.getStyleClass().add("sidebar-nav");
 
-        layout.getTabs().addAll(taskTab, subjectTab, calendarTab);
+        VBox sidebar = new VBox(12, title, navBox);
+        sidebar.getStyleClass().add("sidebar");
+
+        contentArea = new StackPane(taskTabContent, subjectTabContent, calendarTabContent);
+        contentArea.getStyleClass().add("content-area");
+
+        layout.setLeft(sidebar);
+        layout.setCenter(contentArea);
+
+        btnTasks.setSelected(true);
+        showContent(taskTabContent);
     }
 
-    public TabPane getLayout() { return layout; }
+    private ToggleButton createNavButton(String text, ToggleGroup group, VBox targetContent) {
+        ToggleButton button = new ToggleButton(text);
+        button.setToggleGroup(group);
+        button.setMaxWidth(Double.MAX_VALUE);
+        button.getStyleClass().add("nav-button");
+        button.setOnAction(e -> showContent(targetContent));
+        return button;
+    }
+
+    private void showContent(VBox target) {
+        for (Node node : contentArea.getChildren()) {
+            boolean isTarget = node == target;
+            node.setVisible(isTarget);
+            node.setManaged(isTarget);
+        }
+    }
+
+    public BorderPane getLayout() { return layout; }
 
     public VBox getTaskTabContent() {
         return taskTabContent;

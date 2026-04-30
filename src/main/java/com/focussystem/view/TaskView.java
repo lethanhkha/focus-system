@@ -17,8 +17,8 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
+import javafx.scene.control.SplitPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Text;
 import javafx.util.converter.DefaultStringConverter;
 
 import java.time.LocalDate;
@@ -51,7 +51,7 @@ public class TaskView {
     private TextField txtSearch;
     private ComboBox<String> cbFilterStatus;
     private ComboBox<String> cbFilterTime;
-    private Button btnReset, btnExport, btnImport, btnRefresh;
+    private Button btnReset, btnExport, btnImport, btnRefresh, btnTemplate;
     private ToggleButton btnToday;
     private Label lblCompletedToday;
 
@@ -76,6 +76,7 @@ public class TaskView {
     private void buildUI() {
         table = new TableView<>();
         table.setEditable(true);
+        table.getStyleClass().add("task-table");
 
         // --- COLUMNS ---
         colSubject = new TableColumn<>("Môn học");
@@ -85,27 +86,22 @@ public class TaskView {
         colTitle = new TableColumn<>("Nội dung");
         colTitle.setCellValueFactory(new PropertyValueFactory<>("title"));
         colTitle.setPrefWidth(250);
-        // Custom CellFactory: gạch ngang + làm mờ khi task đã hoàn thành
+        // Custom CellFactory: style qua CSS class khi task đã hoàn thành
         colTitle.setCellFactory(col -> new TableCell<Task, String>() {
             @Override
             protected void updateItem(String item, boolean empty) {
                 super.updateItem(item, empty);
+                getStyleClass().remove("task-completed");
                 if (empty || item == null) {
                     setText(null);
                     setGraphic(null);
-                    setOpacity(1.0);
-                } else {
-                    Task task = getTableView().getItems().get(getIndex());
-                    Text text = new Text(item);
-                    if (task != null && task.isCompleted()) {
-                        text.setStrikethrough(true);
-                        setOpacity(0.55);
-                    } else {
-                        text.setStrikethrough(false);
-                        setOpacity(1.0);
-                    }
-                    setGraphic(text);
-                    setText(null);
+                    return;
+                }
+                setText(item);
+                setGraphic(null);
+                Task task = getTableRow() == null ? null : getTableRow().getItem();
+                if (task != null && task.isCompleted()) {
+                    getStyleClass().add("task-completed");
                 }
             }
         });
@@ -118,7 +114,32 @@ public class TaskView {
         colPriority = new TableColumn<>("Mức độ");
         colPriority.setCellValueFactory(new PropertyValueFactory<>("priority"));
         colPriority.setPrefWidth(90);
-        colPriority.setCellFactory(column -> new ComboBoxTableCell<Task, Priority>(Priority.values()));
+        colPriority.setCellFactory(column -> new TableCell<Task, Priority>() {
+            private final ComboBox<Priority> comboBox = new ComboBox<>();
+            {
+                comboBox.setItems(FXCollections.observableArrayList(Priority.values()));
+            }
+            
+            @Override
+            protected void updateItem(Priority item, boolean empty) {
+                super.updateItem(item, empty);
+                getStyleClass().removeAll("priority-high", "priority-medium", "priority-low");
+                
+                if (empty || item == null) {
+                    setText(null);
+                    setGraphic(null);
+                } else {
+                    setText(item.name());
+                    if (item == Priority.HIGH) {
+                        getStyleClass().add("priority-high");
+                    } else if (item == Priority.MEDIUM) {
+                        getStyleClass().add("priority-medium");
+                    } else if (item == Priority.LOW) {
+                        getStyleClass().add("priority-low");
+                    }
+                }
+            }
+        });
 
         colStart = new TableColumn<>("Bắt đầu");
         colStart.setCellValueFactory(new PropertyValueFactory<>("startDate"));
@@ -182,6 +203,8 @@ public class TaskView {
         btnRefresh = new Button("🔄 Cập nhật");
         btnRefresh.setTooltip(new Tooltip("Tải lại dữ liệu từ file tasks.json"));
 
+        btnTemplate = new Button("📄 Tải file mẫu");
+
         btnToday = new ToggleButton("🌟 Hôm nay");
         btnToday.setTooltip(new Tooltip("Chỉ hiển thị các task chưa xong và có Deadline là Hôm nay hoặc Đã quá hạn"));
 
@@ -201,55 +224,52 @@ public class TaskView {
                 spacer,
                 lblCompletedToday,
                 separator,
-                btnToday, btnRefresh, btnExport, btnImport
+                btnToday, btnRefresh, btnExport, btnImport, btnTemplate
         );
         filterBar.setAlignment(Pos.CENTER_LEFT);
+            filterBar.getStyleClass().add("filter-bar");
 
         // --- INPUT FORM ---
         cbSemester = new ComboBox<>();
         cbSemester.setPromptText("Chọn Học Kỳ");
+        cbSemester.setMaxWidth(Double.MAX_VALUE);
 
         cbSubject = new ComboBox<>();
         cbSubject.setPromptText("Chọn môn...");
-        cbSubject.setPrefWidth(160);
+        cbSubject.setMaxWidth(Double.MAX_VALUE);
 
         cbPriority = new ComboBox<>(FXCollections.observableArrayList(Priority.values()));
         cbPriority.setValue(Priority.MEDIUM);
-        cbPriority.setPrefWidth(100);
+        cbPriority.setMaxWidth(Double.MAX_VALUE);
 
         txtTitle = new TextField();
         txtTitle.setPromptText("Nội dung công việc...");
-        txtTitle.setPrefWidth(200);
+        txtTitle.setMaxWidth(Double.MAX_VALUE);
 
         txtDesc = new TextField();
         txtDesc.setPromptText("Ghi chú chi tiết...");
-        txtDesc.setPrefWidth(180);
+        txtDesc.setMaxWidth(Double.MAX_VALUE);
 
         dpStart = new DatePicker(LocalDate.now());
         dpStart.setPromptText("Bắt đầu");
-        dpStart.setPrefWidth(120);
+        dpStart.setMaxWidth(Double.MAX_VALUE);
 
         dpDue = new DatePicker(LocalDate.now().plusDays(2));
         dpDue.setPromptText("Hạn chót");
-        dpDue.setPrefWidth(110);
+        dpDue.setMaxWidth(Double.MAX_VALUE);
 
         dpDeadline = new DatePicker(LocalDate.now().plusDays(3));
         dpDeadline.setPromptText("Deadline");
-        dpDeadline.setPrefWidth(110);
+        dpDeadline.setMaxWidth(Double.MAX_VALUE);
 
         btnAdd = new Button("✚ Thêm Task");
+        btnAdd.getStyleClass().add("btn-primary");
 
         btnDelete = new Button("✕ Xóa Task");
+        btnDelete.getStyleClass().add("btn-danger");
 
-        btnDeleteAll = new Button("🗑 Xóa tất cả"); // đỏ đậm hơn để phân biệt
-
-        HBox row1 = new HBox(10, new Label("Học kỳ:"), cbSemester, new Label("Môn:"), cbSubject, new Label("Mức độ:"), cbPriority);
-        row1.setAlignment(Pos.CENTER_LEFT);
-
-        HBox row2 = new HBox(8, txtTitle, txtDesc, dpStart, new Label("→"), dpDue, new Label("⚑"), dpDeadline, btnAdd, btnDelete, btnDeleteAll);
-        row2.setAlignment(Pos.CENTER_LEFT);
-
-        VBox inputForm = new VBox(8, row1, row2);
+        btnDeleteAll = new Button("🗑 Xóa tất cả");
+        btnDeleteAll.getStyleClass().add("btn-danger");
 
         // --- STATUS BAR ---
         lblStatusBar = new Label("Tổng: 0 task");
@@ -257,10 +277,47 @@ public class TaskView {
         statusBar.setAlignment(Pos.CENTER_LEFT);
 
         // --- HEADER ---
-        Label header = new Label("📋 Danh sách nhiệm vụ & Bộ lọc");
+        Label header = new Label("Danh sách nhiệm vụ");
+        header.getStyleClass().add("task-header");
 
-        layout = new VBox(8, header, filterBar, table, inputForm, statusBar);
+        VBox leftArea = new VBox(12, header, filterBar, table, statusBar);
+        VBox.setVgrow(table, javafx.scene.layout.Priority.ALWAYS);
+
+        Label formTitle = new Label("Tạo / cập nhật nhiệm vụ");
+        formTitle.getStyleClass().add("task-form-title");
+
+        VBox fieldSemester = buildFormField("Học kỳ", cbSemester);
+        VBox fieldSubject = buildFormField("Môn học", cbSubject);
+        VBox fieldPriority = buildFormField("Mức độ", cbPriority);
+        VBox fieldTitle = buildFormField("Nội dung", txtTitle);
+        VBox fieldDesc = buildFormField("Ghi chú", txtDesc);
+        VBox fieldStart = buildFormField("Ngày bắt đầu", dpStart);
+        VBox fieldDue = buildFormField("Hạn chót", dpDue);
+        VBox fieldDeadline = buildFormField("Deadline", dpDeadline);
+
+        HBox formActions = new HBox(8, btnAdd, btnDelete, btnDeleteAll);
+        formActions.getStyleClass().add("form-actions");
+
+        VBox formPanel = new VBox(12,
+            formTitle,
+            fieldSemester,
+            fieldSubject,
+            fieldPriority,
+            fieldTitle,
+            fieldDesc,
+            fieldStart,
+            fieldDue,
+            fieldDeadline,
+            formActions
+        );
+        formPanel.getStyleClass().add("task-form-panel");
+
+        SplitPane splitPane = new SplitPane(leftArea, formPanel);
+        splitPane.setDividerPositions(0.78);
+
+        layout = new VBox(12, splitPane);
         layout.setPadding(new Insets(4));
+        VBox.setVgrow(splitPane, javafx.scene.layout.Priority.ALWAYS);
     }
 
     // --- GETTERS ---
@@ -283,6 +340,7 @@ public class TaskView {
     public Button getBtnExport() { return btnExport; }
     public Button getBtnImport() { return btnImport; }
     public Button getBtnRefresh() { return btnRefresh; }
+    public Button getBtnTemplate() { return btnTemplate; }
     public ToggleButton getBtnToday() { return btnToday; }
     public Label getLblCompletedToday() { return lblCompletedToday; }
 
@@ -309,6 +367,14 @@ public class TaskView {
         // Auto-remove after 1.5 seconds
         javafx.animation.PauseTransition pause = new javafx.animation.PauseTransition(javafx.util.Duration.millis(1500));
         pause.play();
+    }
+
+    private VBox buildFormField(String labelText, Control control) {
+        Label label = new Label(labelText);
+        label.getStyleClass().add("form-label");
+        VBox field = new VBox(6, label, control);
+        field.getStyleClass().add("form-field");
+        return field;
     }
 
     /**

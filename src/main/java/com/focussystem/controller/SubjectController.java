@@ -28,6 +28,7 @@ public class SubjectController {
         view.getTable().setItems(subjectList);
         
         view.getBtnImport().setOnAction(e -> handleImport());
+        view.getBtnTemplate().setOnAction(e -> handleDownloadSubjectTemplate());
         view.getBtnSave().setOnAction(e -> handleSave());
         view.getBtnDel().setOnAction(e -> handleDelete());
         view.getTable().setOnKeyPressed(e -> {
@@ -53,6 +54,24 @@ public class SubjectController {
             subjectList.addAll(imported);
             dataManager.saveSubjects(new ArrayList<>(subjectList));
             AlertHelper.showSuccess("Đã import " + imported.size() + " môn!");
+        }
+    }
+
+    private void handleDownloadSubjectTemplate() {
+        FileChooser fc = new FileChooser();
+        fc.setTitle("Tải file mẫu Môn Học");
+        fc.getExtensionFilters().add(new FileChooser.ExtensionFilter("Text Files", "*.txt"));
+        fc.setInitialFileName("subjects_template.txt");
+        File f = fc.showSaveDialog(view.getLayout().getScene() != null ? view.getLayout().getScene().getWindow() : null);
+        if (f != null) {
+            try (java.io.FileWriter writer = new java.io.FileWriter(f)) {
+                writer.write("HK1;002009;Nhập môn Tin học;2;BB\n");
+                writer.write("HK1;002010;Lập trình Java;2;BB\n");
+            } catch (Exception e) {
+                AlertHelper.showError("Lỗi", "Lỗi khi lưu file mẫu!");
+                return;
+            }
+            AlertHelper.showSuccess("Đã tải file mẫu thành công!");
         }
     }
 

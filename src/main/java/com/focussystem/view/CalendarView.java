@@ -4,7 +4,6 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.*;
 
 public class CalendarView {
@@ -15,6 +14,7 @@ public class CalendarView {
     private Button btnToday;
     private Label lblMonthYear;
     
+    private GridPane dayOfWeekHeader;
     private GridPane calendarGrid;
 
     public CalendarView() {
@@ -31,6 +31,7 @@ public class CalendarView {
         lblMonthYear = new Label("Tháng X Năm YYYY");
         lblMonthYear.setPrefWidth(200);
         lblMonthYear.setAlignment(Pos.CENTER);
+        lblMonthYear.getStyleClass().add("calendar-header");
         
         btnNextMonth = new Button("▶");
         
@@ -45,12 +46,33 @@ public class CalendarView {
         HBox header = new HBox(10, spacer1, btnPrevMonth, lblMonthYear, btnNextMonth, btnToday, spacer2);
         header.setAlignment(Pos.CENTER);
         
+        // --- DAYS OF WEEK HEADER ---
+        dayOfWeekHeader = new GridPane();
+        dayOfWeekHeader.setHgap(5);
+        dayOfWeekHeader.setAlignment(Pos.CENTER);
+        dayOfWeekHeader.getStyleClass().add("calendar-days-header");
+
+        // Set column constraints so 7 columns have equal width
+        for (int i = 0; i < 7; i++) {
+            ColumnConstraints col = new ColumnConstraints();
+            col.setPercentWidth(100.0 / 7);
+            dayOfWeekHeader.getColumnConstraints().add(col);
+        }
+
+        String[] daysOfWeek = {"Chủ nhật", "Thứ 2", "Thứ 3", "Thứ 4", "Thứ 5", "Thứ 6", "Thứ 7"};
+        for (int i = 0; i < 7; i++) {
+            Label dayLabel = new Label(daysOfWeek[i]);
+            dayLabel.setMaxWidth(Double.MAX_VALUE);
+            dayLabel.setAlignment(Pos.CENTER);
+            dayOfWeekHeader.add(dayLabel, i, 0);
+        }
+
         // --- GRID ---
         calendarGrid = new GridPane();
         calendarGrid.setHgap(5);
         calendarGrid.setVgap(5);
         calendarGrid.setAlignment(Pos.CENTER);
-        
+
         // Set column constraints so 7 columns have equal width
         for (int i = 0; i < 7; i++) {
             ColumnConstraints col = new ColumnConstraints();
@@ -58,19 +80,11 @@ public class CalendarView {
             calendarGrid.getColumnConstraints().add(col);
         }
         
-        // Add days of week header
-        String[] daysOfWeek = {"Thứ 2", "Thứ 3", "Thứ 4", "Thứ 5", "Thứ 6", "Thứ 7", "Chủ nhật"};
-        for (int i = 0; i < 7; i++) {
-            Label dayLabel = new Label(daysOfWeek[i]);
-            dayLabel.setMaxWidth(Double.MAX_VALUE);
-            dayLabel.setAlignment(Pos.CENTER);
-            calendarGrid.add(dayLabel, i, 0);
-        }
-        
         // Ensure calendar grows
+        VBox.setVgrow(dayOfWeekHeader, Priority.NEVER);
         VBox.setVgrow(calendarGrid, Priority.ALWAYS);
-        
-        layout.getChildren().addAll(header, calendarGrid);
+
+        layout.getChildren().addAll(header, dayOfWeekHeader, calendarGrid);
     }
 
     // --- GETTERS ---

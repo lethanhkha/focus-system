@@ -13,7 +13,6 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 
-import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
@@ -61,32 +60,35 @@ public class CalendarController {
 
         GridPane grid = view.getCalendarGrid();
         
-        // Remove old days (row > 0)
-        grid.getChildren().removeIf(node -> GridPane.getRowIndex(node) != null && GridPane.getRowIndex(node) > 0);
+        // Remove old days
+        grid.getChildren().removeIf(node -> GridPane.getRowIndex(node) != null);
 
         // Compute calendar days
         LocalDate firstOfMonth = currentYearMonth.atDay(1);
         int daysInMonth = currentYearMonth.lengthOfMonth();
-        DayOfWeek startDayOfWeek = firstOfMonth.getDayOfWeek();
-        
-        // In Java, Monday is 1, Sunday is 7. Our grid columns: 0 (Thứ 2) to 6 (Chủ nhật)
-        int startCol = startDayOfWeek.getValue() - 1;
+
+        // Sunday should map to column 0
+        int startCol = firstOfMonth.getDayOfWeek().getValue() % 7;
+
+        int totalCells = startCol + daysInMonth;
+        int rowCount = (int) Math.ceil(totalCells / 7.0);
 
         // Clear existing row constraints to avoid duplicate accumulation
         grid.getRowConstraints().clear();
         
-        // Ensure 6 rows exist (1 to 6)
-        for (int i = 1; i <= 6; i++) {
+        // Create only the needed rows
+        for (int i = 0; i < rowCount; i++) {
             javafx.scene.layout.RowConstraints rowRules = new javafx.scene.layout.RowConstraints();
-            rowRules.setPercentHeight(100.0 / 6);
+            rowRules.setPercentHeight(100.0 / rowCount);
             grid.getRowConstraints().add(rowRules);
         }
 
-        LocalDate currentDate = firstOfMonth.minusDays(startCol); // Starting date for the 6x7 grid
+        LocalDate currentDate = firstOfMonth.minusDays(startCol); // Starting date for the grid
 
-        for (int row = 1; row <= 6; row++) {
+        for (int row = 0; row < rowCount; row++) {
             for (int col = 0; col < 7; col++) {
-                VBox dayCell = createDayCell(currentDate);
+            boolean isFirstCell = row == 0 && col == 0;
+                VBox dayCell = createDayCell(currentDate, isFirstCell);
                 grid.add(dayCell, col, row);
                 GridPane.setHgrow(dayCell, Priority.ALWAYS);
                 GridPane.setVgrow(dayCell, Priority.ALWAYS);
@@ -96,11 +98,18 @@ public class CalendarController {
         }
     }
 
-    private VBox createDayCell(LocalDate date) {
+    private VBox createDayCell(LocalDate date, boolean isFirstCell) {
         VBox cell = new VBox(2);
         cell.setPadding(new Insets(4));
+        cell.getStyleClass().add("calendar-cell");
+        if (!date.getMonth().equals(currentYearMonth.getMonth())) {
+            cell.getStyleClass().add("out-of-month");
+        }
         
-        Label dateLabel = new Label(String.valueOf(date.getDayOfMonth()));
+        boolean showMonthLabel = isFirstCell || date.getDayOfMonth() == 1;
+        DateTimeFormatter dayFormatter = DateTimeFormatter.ofPattern("d 'Thg' M");
+        String dateText = showMonthLabel ? date.format(dayFormatter) : String.valueOf(date.getDayOfMonth());
+        Label dateLabel = new Label(dateText);
         cell.getChildren().add(dateLabel);
 
         // Find tasks starting on this date
@@ -110,9 +119,10 @@ public class CalendarController {
 
         VBox tasksBox = new VBox(2);
         for (Task task : dailyTasks) {
-            Label taskLbl = new Label("• " + task.getTitle());
+            Label taskLbl = new Label(task.getTitle());
             taskLbl.setMaxWidth(Double.MAX_VALUE);
             taskLbl.setWrapText(false);
+            taskLbl.getStyleClass().add("calendar-task-badge");
             
             String tooltipText = "Task: " + task.getTitle() + "\n" +
                                  "Môn học: " + task.getSubject() + "\n" +

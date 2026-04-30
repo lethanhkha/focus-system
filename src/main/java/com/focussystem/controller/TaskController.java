@@ -3,6 +3,7 @@ package com.focussystem.controller;
 import com.focussystem.model.Config;
 import com.focussystem.model.Subject;
 import com.focussystem.model.Task;
+import com.focussystem.model.Priority;
 import com.focussystem.service.DataManager;
 import com.focussystem.util.AlertHelper;
 import com.focussystem.view.TaskView;
@@ -236,6 +237,7 @@ public class TaskController {
         view.getBtnExport().setOnAction(e -> handleExport());
         view.getBtnImport().setOnAction(e -> handleImport());
         view.getBtnRefresh().setOnAction(e -> handleRefresh());
+        view.getBtnTemplate().setOnAction(e -> handleDownloadTaskTemplate());
     }
 
     private void setupInputFormEvents() {
@@ -481,6 +483,21 @@ public class TaskController {
         updateCounter();
         view.getTable().refresh();
         AlertHelper.showSuccess("🔄 Đã làm mới dữ liệu từ tasks.json!");
+    }
+
+    private void handleDownloadTaskTemplate() {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Lưu file mẫu Task");
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("JSON Files", "*.json"));
+        fileChooser.setInitialFileName("tasks_template.json");
+        File file = fileChooser.showSaveDialog(view.getLayout().getScene() != null ? view.getLayout().getScene().getWindow() : null);
+
+        if (file != null) {
+            List<Task> templateTasks = new ArrayList<>();
+            templateTasks.add(new Task("Ví dụ: Làm bài tập", "Môn ví dụ", LocalDate.now(), LocalDate.now().plusDays(2), LocalDate.now().plusDays(3), Priority.MEDIUM, "Ghi chú ví dụ"));
+            dataManager.exportTasksToJson(file, templateTasks);
+            AlertHelper.showSuccess("Đã tải file mẫu thành công!");
+        }
     }
 
     /** Gắn listener vào completedProperty của mọt task: khi tick/untick -> lưu JSON + refresh table. */
