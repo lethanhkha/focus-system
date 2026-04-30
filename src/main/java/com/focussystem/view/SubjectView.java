@@ -17,7 +17,7 @@ import java.util.function.Consumer;
 public class SubjectView {
     private VBox layout;
     private TableView<Subject> table;
-    private Button btnImport, btnSave, btnDel, btnTemplate;
+    private Button btnImport, btnSave, btnDel, btnTemplate, btnRefresh;
     private Consumer<Subject> onActiveChanged;
 
     public SubjectView() {
@@ -64,13 +64,15 @@ public class SubjectView {
 
         btnTemplate = new Button("📄 Tải file mẫu");
 
+        btnRefresh = new Button("🔄 Làm mới");
+        
         btnSave = new Button("💾 Cập nhật Đăng ký");
         btnSave.getStyleClass().add("btn-primary");
 
         btnDel = new Button("✕ Xóa Môn");
         btnDel.getStyleClass().add("btn-danger");
 
-        HBox toolbar = new HBox(10, btnImport, btnTemplate, btnSave, btnDel);
+        HBox toolbar = new HBox(10, btnImport, btnTemplate, btnRefresh, btnSave, btnDel);
         toolbar.getStyleClass().add("toolbar");
         toolbar.setAlignment(Pos.CENTER_RIGHT);
 
@@ -89,6 +91,7 @@ public class SubjectView {
     public TableView<Subject> getTable() { return table; }
     public Button getBtnImport() { return btnImport; }
     public Button getBtnTemplate() { return btnTemplate; }
+    public Button getBtnRefresh() { return btnRefresh; }
     public Button getBtnSave() { return btnSave; }
     public Button getBtnDel() { return btnDel; }
     public void setOnActiveChanged(Consumer<Subject> listener) { this.onActiveChanged = listener; }

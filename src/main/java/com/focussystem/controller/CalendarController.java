@@ -23,11 +23,13 @@ public class CalendarController {
     private final CalendarView view;
     private final ObservableList<Task> taskList;
     private YearMonth currentYearMonth;
+    private LocalDate selectedDate;
 
     public CalendarController(ObservableList<Task> taskList) {
         this.taskList = taskList;
         this.view = new CalendarView();
         this.currentYearMonth = YearMonth.now();
+        this.selectedDate = LocalDate.now();
 
         setupEvents();
         renderCalendar();
@@ -46,6 +48,7 @@ public class CalendarController {
 
         view.getBtnToday().setOnAction(e -> {
             currentYearMonth = YearMonth.now();
+            selectedDate = LocalDate.now();
             renderCalendar();
         });
 
@@ -87,7 +90,7 @@ public class CalendarController {
 
         for (int row = 0; row < rowCount; row++) {
             for (int col = 0; col < 7; col++) {
-            boolean isFirstCell = row == 0 && col == 0;
+                boolean isFirstCell = row == 0 && col == 0;
                 VBox dayCell = createDayCell(currentDate, isFirstCell);
                 grid.add(dayCell, col, row);
                 GridPane.setHgrow(dayCell, Priority.ALWAYS);
@@ -102,6 +105,9 @@ public class CalendarController {
         VBox cell = new VBox(2);
         cell.setPadding(new Insets(4));
         cell.getStyleClass().add("calendar-cell");
+        if (date.equals(selectedDate)) {
+            cell.getStyleClass().add("calendar-cell-selected");
+        }
         if (!date.getMonth().equals(currentYearMonth.getMonth())) {
             cell.getStyleClass().add("out-of-month");
         }
@@ -145,6 +151,11 @@ public class CalendarController {
         
         VBox.setVgrow(scroll, Priority.ALWAYS);
         cell.getChildren().add(scroll);
+
+        cell.setOnMouseClicked(e -> {
+            selectedDate = date;
+            renderCalendar();
+        });
 
         return cell;
     }

@@ -200,6 +200,12 @@
   -fx-background-radius: 6;
 }
 
+.calendar-cell-selected {
+  -fx-background-color: #e7f1ff;
+  -fx-border-color: #0d6efd;
+  -fx-border-width: 2;
+}
+
 .calendar-task-badge {
   -fx-background-color: -fx-app-primary;
   -fx-text-fill: white;
@@ -219,6 +225,27 @@
 
 .table-row-cell:hover {
   -fx-background-color: #e2e8f0;
+}
+
+.table-row-cell:selected,
+.table-row-cell:selected .text,
+.table-cell:selected,
+.table-cell:selected .text {
+  -fx-background-color: #0d6efd;
+  -fx-text-fill: white;
+}
+
+/* Remaining days helpers */
+.remaining-overdue {
+  -fx-text-fill: #dc3545; /* red */
+  -fx-font-weight: bold;
+}
+.remaining-soon {
+  -fx-text-fill: #f39c12; /* orange */
+  -fx-font-weight: bold;
+}
+.remaining-normal {
+  -fx-text-fill: -fx-app-text;
 }
 
 /* ==================== PRIORITY COLORS ==================== */

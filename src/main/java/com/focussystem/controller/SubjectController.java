@@ -29,6 +29,7 @@ public class SubjectController {
         
         view.getBtnImport().setOnAction(e -> handleImport());
         view.getBtnTemplate().setOnAction(e -> handleDownloadSubjectTemplate());
+        view.getBtnRefresh().setOnAction(e -> handleRefresh());
         view.getBtnSave().setOnAction(e -> handleSave());
         view.getBtnDel().setOnAction(e -> handleDelete());
         view.getTable().setOnKeyPressed(e -> {
@@ -78,6 +79,13 @@ public class SubjectController {
     private void handleSave() {
         dataManager.saveSubjects(new ArrayList<>(subjectList));
         AlertHelper.showSuccess("Đã lưu!");
+    }
+
+    private void handleRefresh() {
+        List<Subject> reloaded = dataManager.loadSubjects();
+        subjectList.setAll(reloaded);
+        view.getTable().refresh();
+        AlertHelper.showSuccess("Đã làm mới danh sách môn học!");
     }
 
     private void handleDelete() {

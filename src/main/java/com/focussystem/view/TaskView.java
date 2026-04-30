@@ -163,10 +163,19 @@ public class TaskView {
             @Override
             protected void updateItem(Long item, boolean empty) {
                 super.updateItem(item, empty);
+                getStyleClass().removeAll("remaining-overdue", "remaining-soon", "remaining-normal");
                 if (empty || item == null) {
                     setText(null);
+                    setGraphic(null);
                 } else {
                     setText(item + " ngày");
+                    if (item < 0) {
+                        getStyleClass().add("remaining-overdue");
+                    } else if (item == 0) {
+                        getStyleClass().add("remaining-soon");
+                    } else {
+                        getStyleClass().add("remaining-normal");
+                    }
                 }
             }
         });
@@ -212,7 +221,7 @@ public class TaskView {
 
         Separator separator = new Separator(Orientation.VERTICAL);
 
-        // Spacer to push export/import to the right
+        // Spacer to push today + refresh to the right
         Region spacer = new Region();
         HBox.setHgrow(spacer, javafx.scene.layout.Priority.ALWAYS);
 
@@ -224,10 +233,10 @@ public class TaskView {
                 spacer,
                 lblCompletedToday,
                 separator,
-                btnToday, btnRefresh, btnExport, btnImport, btnTemplate
-        );
+                btnToday, btnRefresh
+         );
         filterBar.setAlignment(Pos.CENTER_LEFT);
-            filterBar.getStyleClass().add("filter-bar");
+        filterBar.getStyleClass().add("filter-bar");
 
         // --- INPUT FORM ---
         cbSemester = new ComboBox<>();
@@ -271,16 +280,18 @@ public class TaskView {
         btnDeleteAll = new Button("🗑 Xóa tất cả");
         btnDeleteAll.getStyleClass().add("btn-danger");
 
-        // --- STATUS BAR ---
+        // --- STATUS / ACTION FOOTER (single line) ---
         lblStatusBar = new Label("Tổng: 0 task");
-        HBox statusBar = new HBox(lblStatusBar);
-        statusBar.setAlignment(Pos.CENTER_LEFT);
+        Region bottomSpacer = new Region();
+        HBox.setHgrow(bottomSpacer, javafx.scene.layout.Priority.ALWAYS);
+        HBox footerBar = new HBox(12, lblStatusBar, bottomSpacer, btnExport, btnImport, btnTemplate);
+        footerBar.setAlignment(Pos.CENTER_LEFT);
 
         // --- HEADER ---
         Label header = new Label("Danh sách nhiệm vụ");
         header.getStyleClass().add("task-header");
 
-        VBox leftArea = new VBox(12, header, filterBar, table, statusBar);
+        VBox leftArea = new VBox(12, header, filterBar, table, footerBar);
         VBox.setVgrow(table, javafx.scene.layout.Priority.ALWAYS);
 
         Label formTitle = new Label("Tạo / cập nhật nhiệm vụ");
