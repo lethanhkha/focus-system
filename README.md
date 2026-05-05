@@ -52,23 +52,43 @@ java -version
 mvn -v
 ```
 
-## 5) Cách chạy dự án
+## 5) Cách chạy và xuất bản file JAR
 
-**Cách 1: Chạy trực tiếp từ source code**
+### Chạy trực tiếp từ mã nguồn
 
 ```bash
 mvn clean compile
-mvn exec:java -Dexec.mainClass=com.focussystem.Launcher
+mvn javafx:run
 ```
 
-(Nếu máy chưa cài plugin exec, bạn có thể đóng gói rồi chạy file JAR theo Cách 2).
+### Xuất bản file JAR portable để double click
 
-**Cách 2: Đóng gói và chạy file JAR**
+Project được cấu hình để đóng gói thành một file JAR có manifest sẵn. Sau khi build xong, file phát hành sẽ là:
+
+```text
+target/focus-system.jar
+```
+
+Cách xuất bản:
 
 ```bash
 mvn clean package
-java -jar target/focus-system-1.0-SNAPSHOT.jar
 ```
+
+Cách sử dụng file phát hành:
+
+- Copy file `target/focus-system.jar` ra một thư mục riêng để phát hành.
+- Người dùng chỉ cần double click file JAR để mở ứng dụng nếu máy đã cài Java 17+ và liên kết đuôi `.jar` với Java.
+- Nếu double click chưa chạy được, có thể kiểm tra lại bằng lệnh:
+
+```bash
+java -jar target/focus-system.jar
+```
+
+**Lưu ý:**
+
+- Đây là bản portable dạng JAR, không phải file cài đặt `.exe`.
+- Nếu ứng dụng cần dữ liệu local riêng theo máy người dùng, hãy đặt các file JSON đi kèm cùng thư mục với file JAR.
 
 ## 6) Dữ liệu và lưu trữ
 
@@ -169,7 +189,17 @@ Không commit các thư mục/file sinh ra trong quá trình build (đã đượ
 - Các file log tạm thời (build.log, compile_log.txt, ...)
 - Các file data local (`tasks.json`, `config.json`, v.v.)
 
-## 9) Xử lý sự cố (Troubleshooting)
+## 9) Quy trình xuất bản JAR portable
+
+1. Chạy `mvn clean package`.
+2. Lấy file `target/focus-system-1.0-SNAPSHOT.jar`.
+3. Copy file JAR này ra một thư mục riêng để phát hành.
+4. Gửi cho người dùng cuối cùng file JAR đó.
+5. Người dùng chỉ cần double click để chạy nếu máy đã cài Java và đã liên kết đuôi `.jar` với Java.
+
+Nếu muốn đơn giản hơn cho người dùng, có thể tạo thêm một file `.bat` để gọi `java -jar ...`, nhưng bản hiện tại chỉ cần JAR portable là đủ.
+
+## 10) Xử lý sự cố (Troubleshooting)
 
 **Lỗi không mở được JavaFX:**
 Đảm bảo bạn đang dùng JDK 17+ và các dependency JavaFX đã được Maven resolve đầy đủ.
@@ -180,7 +210,7 @@ Không commit các thư mục/file sinh ra trong quá trình build (đã đượ
 **Lỗi nạp dữ liệu JSON:**
 Kiểm tra lại định dạng file JSON xem có hợp lệ (valid) không trước khi tiến hành import.
 
-## 10) Định hướng phát triển tương lai
+## 11) Định hướng phát triển tương lai
 
 - Bổ sung Unit Test cho layer Service và Controller.
 - Tách các Business Rule (quy tắc nghiệp vụ) phức tạp sang một layer riêng biệt để dễ quản lý.

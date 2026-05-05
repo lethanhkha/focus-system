@@ -76,6 +76,24 @@ public class TaskController {
 
         view.getTable().setItems(sortedData);
 
+        // Row factory: add visual classes for overdue / today / completed
+        view.getTable().setRowFactory(tv -> new TableRow<Task>() {
+            @Override
+            protected void updateItem(Task item, boolean empty) {
+                super.updateItem(item, empty);
+                getStyleClass().removeAll("row-overdue", "row-today", "row-completed");
+                if (item == null || empty) return;
+                Long days = item.getDaysRemaining();
+                if (item.isCompleted()) {
+                    getStyleClass().add("row-completed");
+                } else if (days != null && days < 0) {
+                    getStyleClass().add("row-overdue");
+                } else if (days != null && days == 0) {
+                    getStyleClass().add("row-today");
+                }
+            }
+        });
+
         // Bind Subject ComboBox in table
         view.setupSubjectColumnChoices(subjectList);
 
@@ -121,6 +139,21 @@ public class TaskController {
         updateFilter();
         updateStatusBar();
         updateCounter();
+
+        // Footer counters clickable: quick filters
+        view.getLblOverdue().setOnMouseClicked(e -> {
+            view.getCbFilterTime().setValue("Quá hạn");
+            updateFilter();
+        });
+        view.getLblDone().setOnMouseClicked(e -> {
+            view.getCbFilterStatus().setValue("Hoàn thành");
+            updateFilter();
+        });
+        view.getLblTotal().setOnMouseClicked(e -> {
+            view.getCbFilterStatus().setValue("Tất cả");
+            view.getCbFilterTime().setValue("Tất cả");
+            updateFilter();
+        });
     }
 
     private void setupTableEditEvents() {
@@ -555,10 +588,10 @@ public class TaskController {
         long completed = filteredData.stream()
                 .filter(Task::isCompleted)
                 .count();
-
-        view.getLblStatusBar().setText(
-                String.format("📊 Tổng: %d task  |  ⚠ Quá hạn: %d  |  ✅ Hoàn thành: %d", total, overdue, completed)
-        );
+        // Update individual footer counters for better interactivity
+        if (view.getLblTotal() != null) view.getLblTotal().setText("📊 Tổng: " + total);
+        if (view.getLblOverdue() != null) view.getLblOverdue().setText("⚠ Quá hạn: " + overdue);
+        if (view.getLblDone() != null) view.getLblDone().setText("✅ Hoàn thành: " + completed);
     }
 
     public TaskView getView() {

@@ -267,3 +267,63 @@
 .out-of-month {
   -fx-opacity: 0.4;
 }
+
+/* Priority badge styling for table cells */
+.priority-badge {
+  -fx-background-radius: 6;
+  -fx-padding: 3 8;
+  -fx-font-size: 12px;
+}
+.priority-badge.priority-high {
+  -fx-background-color: #fdecea;
+  -fx-text-fill: #b02a37;
+}
+.priority-badge.priority-medium {
+  -fx-background-color: #fff7e6;
+  -fx-text-fill: #8a5a00;
+}
+.priority-badge.priority-low {
+  -fx-background-color: #e8f6ef;
+  -fx-text-fill: #0f5132;
+}
+
+/* Footer counters (clickable) */
+.footer-counter {
+  -fx-cursor: hand;
+  -fx-padding: 4 8;
+  -fx-background-radius: 6;
+}
+.footer-counter:hover {
+  -fx-background-color: #eef2f7;
+}
+
+/* Legend styles */
+.legend-overdue {
+  -fx-text-fill: #dc3545;
+  -fx-font-weight: bold;
+}
+.legend-today {
+  -fx-text-fill: #f39c12;
+  -fx-font-weight: bold;
+}
+.legend-done {
+  -fx-text-fill: #198754;
+  -fx-font-weight: bold;
+}
+
+/* Row level highlights */
+.table-row-cell.row-overdue {
+  -fx-background-color: rgba(220, 53, 69, 0.06);
+}
+.table-row-cell.row-today {
+  -fx-background-color: rgba(243, 156, 18, 0.04);
+}
+.table-row-cell.row-completed {
+  -fx-background-color: rgba(25, 135, 84, 0.04);
+}
+
+/* Accessibility: focus outline for keyboard users */
+.table-row-cell:focused {
+  -fx-border-color: #0d6efd;
+  -fx-border-width: 0 0 0 3;
+}

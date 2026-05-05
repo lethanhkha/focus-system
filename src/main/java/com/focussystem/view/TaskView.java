@@ -68,6 +68,9 @@ public class TaskView {
 
     // Status Bar
     private Label lblStatusBar;
+    private Label lblTotal;
+    private Label lblOverdue;
+    private Label lblDone;
 
     public TaskView() {
         buildUI();
@@ -129,14 +132,17 @@ public class TaskView {
                     setText(null);
                     setGraphic(null);
                 } else {
-                    setText(item.name());
+                    Label badge = new Label(item.name());
+                    badge.getStyleClass().add("priority-badge");
                     if (item == Priority.HIGH) {
-                        getStyleClass().add("priority-high");
+                        badge.getStyleClass().add("priority-high");
                     } else if (item == Priority.MEDIUM) {
-                        getStyleClass().add("priority-medium");
+                        badge.getStyleClass().add("priority-medium");
                     } else if (item == Priority.LOW) {
-                        getStyleClass().add("priority-low");
+                        badge.getStyleClass().add("priority-low");
                     }
+                    setGraphic(badge);
+                    setText(null);
                 }
             }
         });
@@ -168,14 +174,19 @@ public class TaskView {
                     setText(null);
                     setGraphic(null);
                 } else {
-                    setText(item + " ngày");
+                    String text = item + " ngày";
                     if (item < 0) {
+                        text = "⚠ " + text;
                         getStyleClass().add("remaining-overdue");
                     } else if (item == 0) {
+                        text = "🔔 Hôm nay";
                         getStyleClass().add("remaining-soon");
                     } else {
                         getStyleClass().add("remaining-normal");
                     }
+                    setText(text);
+                    Tooltip tt = new Tooltip("Còn: " + item + " ngày");
+                    Tooltip.install(this, tt);
                 }
             }
         });
@@ -281,17 +292,34 @@ public class TaskView {
         btnDeleteAll.getStyleClass().add("btn-danger");
 
         // --- STATUS / ACTION FOOTER (single line) ---
-        lblStatusBar = new Label("Tổng: 0 task");
+        lblTotal = new Label("📊 Tổng: 0");
+        lblOverdue = new Label("⚠ Quá hạn: 0");
+        lblDone = new Label("✅ Hoàn thành: 0");
+        lblTotal.getStyleClass().add("footer-counter");
+        lblOverdue.getStyleClass().add("footer-counter");
+        lblDone.getStyleClass().add("footer-counter");
+
+        // keep backward-compatible reference
+        lblStatusBar = lblTotal;
+
         Region bottomSpacer = new Region();
         HBox.setHgrow(bottomSpacer, javafx.scene.layout.Priority.ALWAYS);
-        HBox footerBar = new HBox(12, lblStatusBar, bottomSpacer, btnExport, btnImport, btnTemplate);
+        HBox footerBar = new HBox(12, lblTotal, new Separator(Orientation.VERTICAL), lblOverdue, lblDone, bottomSpacer, btnExport, btnImport, btnTemplate);
         footerBar.setAlignment(Pos.CENTER_LEFT);
 
         // --- HEADER ---
         Label header = new Label("Danh sách nhiệm vụ");
         header.getStyleClass().add("task-header");
 
-        VBox leftArea = new VBox(12, header, filterBar, table, footerBar);
+        // Legend for colors / badges
+        HBox legend = new HBox(8);
+        Label l1 = new Label("⚠ Quá hạn"); l1.getStyleClass().add("legend-overdue");
+        Label l2 = new Label("🔔 Hôm nay"); l2.getStyleClass().add("legend-today");
+        Label l3 = new Label("✅ Hoàn thành"); l3.getStyleClass().add("legend-done");
+        legend.getChildren().addAll(l1, l2, l3);
+        legend.setAlignment(Pos.CENTER_LEFT);
+
+        VBox leftArea = new VBox(8, header, legend, filterBar, table, footerBar);
         VBox.setVgrow(table, javafx.scene.layout.Priority.ALWAYS);
 
         Label formTitle = new Label("Tạo / cập nhật nhiệm vụ");
@@ -368,6 +396,9 @@ public class TaskView {
     public Button getBtnDeleteAll() { return btnDeleteAll; }
 
     public Label getLblStatusBar() { return lblStatusBar; }
+    public Label getLblTotal() { return lblTotal; }
+    public Label getLblOverdue() { return lblOverdue; }
+    public Label getLblDone() { return lblDone; }
 
     /**
      * Marks a control with the "input-error" CSS class for a brief duration (1.5s),
