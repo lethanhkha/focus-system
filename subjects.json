@@ -429,7 +429,7 @@
     "name": "Nhập môn an toàn thông tin",
     "credits": 3,
     "isCompulsory": true,
-    "isActive": true
+    "isActive": false
   },
   {
     "semester": "HK6",

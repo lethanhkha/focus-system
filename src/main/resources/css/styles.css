@@ -322,6 +322,26 @@
   -fx-background-color: rgba(25, 135, 84, 0.04);
 }
 
+/* Ensure selected rows always show selection color */
+.table-row-cell:selected,
+.table-row-cell.row-overdue:selected,
+.table-row-cell.row-today:selected,
+.table-row-cell.row-completed:selected,
+.table-row-cell:selected .text,
+.table-cell:selected,
+.table-cell:selected .text {
+  -fx-background-color: #0d6efd;
+  -fx-text-fill: white;
+}
+
+/* Make custom text elements legible when selected */
+.table-row-cell:selected .remaining-overdue,
+.table-row-cell:selected .remaining-soon,
+.table-row-cell:selected .remaining-normal,
+.table-row-cell:selected .task-completed {
+  -fx-text-fill: white;
+}
+
 /* Accessibility: focus outline for keyboard users */
 .table-row-cell:focused {
   -fx-border-color: #0d6efd;

@@ -18,6 +18,8 @@ public class SubjectView {
     private VBox layout;
     private TableView<Subject> table;
     private Button btnImport, btnSave, btnDel, btnTemplate, btnRefresh;
+    private ComboBox<String> cbFilterType;
+    private ComboBox<String> cbFilterSemester;
     private Consumer<Subject> onActiveChanged;
 
     public SubjectView() {
@@ -72,6 +74,23 @@ public class SubjectView {
         btnDel = new Button("✕ Xóa Môn");
         btnDel.getStyleClass().add("btn-danger");
 
+        cbFilterType = new ComboBox<>();
+        cbFilterType.setItems(javafx.collections.FXCollections.observableArrayList("Tất cả", "Bắt buộc", "Tự chọn"));
+        cbFilterType.setValue("Tất cả");
+
+        cbFilterSemester = new ComboBox<>();
+        cbFilterSemester.setItems(javafx.collections.FXCollections.observableArrayList("Tất cả"));
+        cbFilterSemester.setValue("Tất cả");
+
+        HBox hbSemester = new HBox(5, new Label("Học kỳ:"), cbFilterSemester);
+        hbSemester.setAlignment(Pos.CENTER_LEFT);
+        
+        HBox hbType = new HBox(5, new Label("Loại:"), cbFilterType);
+        hbType.setAlignment(Pos.CENTER_LEFT);
+
+        HBox filterBox = new HBox(15, hbSemester, hbType);
+        filterBox.setAlignment(Pos.CENTER_LEFT);
+
         HBox toolbar = new HBox(10, btnImport, btnTemplate, btnRefresh, btnSave, btnDel);
         toolbar.getStyleClass().add("toolbar");
         toolbar.setAlignment(Pos.CENTER_RIGHT);
@@ -79,7 +98,7 @@ public class SubjectView {
         Label header = new Label("📚 Quản lý Đăng ký Môn học ");
         Region spacer = new Region();
         HBox.setHgrow(spacer, Priority.ALWAYS);
-        HBox headerRow = new HBox(10, header, spacer, toolbar);
+        HBox headerRow = new HBox(15, header, filterBox, spacer, toolbar);
         headerRow.setAlignment(Pos.CENTER_LEFT);
         headerRow.setPadding(new Insets(4, 0, 4, 0));
 
@@ -94,5 +113,7 @@ public class SubjectView {
     public Button getBtnRefresh() { return btnRefresh; }
     public Button getBtnSave() { return btnSave; }
     public Button getBtnDel() { return btnDel; }
+    public ComboBox<String> getCbFilterType() { return cbFilterType; }
+    public ComboBox<String> getCbFilterSemester() { return cbFilterSemester; }
     public void setOnActiveChanged(Consumer<Subject> listener) { this.onActiveChanged = listener; }
 }

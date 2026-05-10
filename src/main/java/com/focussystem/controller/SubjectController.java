@@ -5,6 +5,7 @@ import com.focussystem.service.DataManager;
 import com.focussystem.util.AlertHelper;
 import com.focussystem.view.SubjectView;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
 import javafx.stage.FileChooser;
 
 import java.io.File;
@@ -14,6 +15,7 @@ import java.util.List;
 public class SubjectController {
     private SubjectView view;
     private ObservableList<Subject> subjectList;
+    private FilteredList<Subject> filteredData;
     private DataManager dataManager;
 
     public SubjectController(DataManager dataManager, ObservableList<Subject> subjectList) {
@@ -25,7 +27,21 @@ public class SubjectController {
     }
 
     private void initView() {
-        view.getTable().setItems(subjectList);
+        filteredData = new FilteredList<>(subjectList, p -> true);
+        view.getTable().setItems(filteredData);
+        
+        view.getCbFilterType().valueProperty().addListener((obs, oldVal, newVal) -> {
+            updateFilter();
+        });
+        
+        view.getCbFilterSemester().valueProperty().addListener((obs, oldVal, newVal) -> {
+            updateFilter();
+        });
+
+        subjectList.addListener((javafx.collections.ListChangeListener<Subject>) c -> {
+            refreshSemesterChoices();
+        });
+        refreshSemesterChoices();
         
         view.getBtnImport().setOnAction(e -> handleImport());
         view.getBtnTemplate().setOnAction(e -> handleDownloadSubjectTemplate());
@@ -100,6 +116,36 @@ public class SubjectController {
             view.getTable().getSelectionModel().clearSelection();
             AlertHelper.showSuccess("Đã xóa thành công!");
         }
+    }
+
+    private void refreshSemesterChoices() {
+        List<String> semesters = subjectList.stream()
+                .map(Subject::getSemester)
+                .distinct()
+                .sorted()
+                .collect(java.util.stream.Collectors.toList());
+        semesters.add(0, "Tất cả");
+        
+        String current = view.getCbFilterSemester().getValue();
+        view.getCbFilterSemester().setItems(javafx.collections.FXCollections.observableArrayList(semesters));
+        
+        if (current != null && semesters.contains(current)) {
+            view.getCbFilterSemester().setValue(current);
+        } else {
+            view.getCbFilterSemester().setValue("Tất cả");
+        }
+    }
+
+    private void updateFilter() {
+        String filterType = view.getCbFilterType().getValue();
+        String filterSemester = view.getCbFilterSemester().getValue();
+        
+        filteredData.setPredicate(subject -> {
+            boolean matchType = filterType == null || "Tất cả".equals(filterType) || filterType.equals(subject.getTypeString());
+            boolean matchSemester = filterSemester == null || "Tất cả".equals(filterSemester) || filterSemester.equals(subject.getSemester());
+            
+            return matchType && matchSemester;
+        });
     }
 
     public SubjectView getView() {
